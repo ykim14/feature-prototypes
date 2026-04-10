@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import {
   HeadingField,
-  RichTextDisplayField,
-  TextItem,
   ButtonWidget,
   TextField,
   DropdownField,
@@ -220,7 +218,7 @@ function RepeatTimerSection() {
   const [enabled, setEnabled] = useState(true)
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <CheckboxField
         choiceLabels={['Repeat Timer Event']}
         choiceValues={[true]}
@@ -229,51 +227,33 @@ function RepeatTimerSection() {
         labelPosition="COLLAPSED"
         marginBelow="NONE"
       />
-      {enabled && <RecurrenceContent />}
+      {enabled && <div className="ml-6"><RecurrenceContent /></div>}
     </div>
   )
 }
 
 export function TimerRecurrenceMockupsV2() {
   return (
-    <div className="space-y-6">
-      <div>
-        <HeadingField
-          text="Timer Recurrence — Mockup V2"
-          size="LARGE_PLUS"
-          fontWeight="BOLD"
-          marginBelow="EVEN_LESS"
-        />
-        <RichTextDisplayField
-          value={[
-            <TextItem key="sub" text="Alternative design using tabs and switches instead of dropdowns and radio buttons." color="SECONDARY" size="MEDIUM" />,
-          ]}
-        />
-      </div>
-
-      <div className="max-w-2xl">
-        <CardLayout padding="NONE" showShadow={false} shape="SQUARED">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <HeadingField text="Timer Event" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="NONE" />
-          </div>
-          <div className="p-6 overflow-y-auto" style={{ height: '350px' }}>
-            <RepeatTimerSection />
-          </div>
-          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-            <ButtonWidget label="CANCEL" style="OUTLINE" color="ACCENT" size="SMALL" className="rounded-none" />
-            <ButtonWidget label="OK" style="SOLID" color="ACCENT" size="SMALL" className="rounded-none" />
-          </div>
-        </CardLayout>
-      </div>
-
-      <div className="max-w-lg text-sm text-gray-500 space-y-2">
+    <div className="space-y-4">
+      <HeadingField text="Option B" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="NONE" />
+      <CardLayout padding="NONE" showShadow={false} shape="SQUARED">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <HeadingField text="Timer Event" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="NONE" />
+        </div>
+        <div className="p-6 overflow-y-auto" style={{ height: '350px' }}>
+          <RepeatTimerSection />
+        </div>
+        <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+          <ButtonWidget label="CANCEL" style="OUTLINE" color="ACCENT" size="SMALL" className="rounded-none" />
+          <ButtonWidget label="OK" style="SOLID" color="ACCENT" size="SMALL" className="rounded-none" />
+        </div>
+      </CardLayout>
+      <div className="text-sm text-gray-500 space-y-2">
         <p className="font-semibold text-gray-700">Design Notes</p>
         <ul className="list-disc ml-5 space-y-1">
-          <li>Tabs replace the dropdown for recurrence type selection — all options visible at once.</li>
-          <li>Switch toggle replaces checkbox for "Repeat Timer Event" and OR logic (weekdays only, nth weekday pattern).</li>
-          <li>Form-driven layout with labeled fields in a grid — no inline radio+text patterns.</li>
-          <li>Every numeric field and dropdown has a formula button for expression editor access.</li>
-          <li>Time of Day and Timezone appear for all types except Interval.</li>
+          <li>Radio buttons for recurrence type — all options visible at once.</li>
+          <li>Switch toggles for OR logic (weekdays only, nth weekday pattern).</li>
+          <li>Form-driven grid layout with labeled fields.</li>
         </ul>
       </div>
     </div>

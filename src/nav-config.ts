@@ -19,7 +19,6 @@ export const navTree: NavNode[] = [
                 children: [
                   { name: 'Feature Card', path: '/process-events/timer-recurrence-requirements' },
                   { name: 'Mockups', path: '/process-events/timer-recurrence-mockups' },
-                  { name: 'Mockups V2', path: '/process-events/timer-recurrence-mockups-v2' },
                 ],
               },
             ],

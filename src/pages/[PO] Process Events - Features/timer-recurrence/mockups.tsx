@@ -305,6 +305,8 @@ function RepeatTimerSection() {
   )
 }
 
+import { TimerRecurrenceMockupsV2 } from './mockups-v2'
+
 export default function TimerRecurrenceMockups() {
   return (
     <div className="space-y-6">
@@ -317,35 +319,39 @@ export default function TimerRecurrenceMockups() {
         />
         <RichTextDisplayField
           value={[
-            <TextItem key="sub" text="Interactive prototype for the repeat timer configuration." color="SECONDARY" size="MEDIUM" />,
+            <TextItem key="sub" text="Interactive prototypes for the repeat timer configuration." color="SECONDARY" size="MEDIUM" />,
           ]}
         />
       </div>
 
-      <div className="max-w-2xl">
-        <CardLayout padding="NONE" showShadow={false} shape="SQUARED">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <HeadingField text="Timer Event" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="NONE" />
+      <div className="grid grid-cols-2 gap-6 items-start">
+        {/* V1 */}
+        <div className="space-y-4">
+          <HeadingField text="Option A" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="NONE" />
+          <CardLayout padding="NONE" showShadow={false} shape="SQUARED">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <HeadingField text="Timer Event" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="NONE" />
+            </div>
+            <div className="p-6 overflow-y-auto" style={{ height: '350px' }}>
+              <RepeatTimerSection />
+            </div>
+            <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+              <ButtonWidget label="CANCEL" style="OUTLINE" color="ACCENT" size="SMALL" className="rounded-none" />
+              <ButtonWidget label="OK" style="SOLID" color="ACCENT" size="SMALL" className="rounded-none" />
+            </div>
+          </CardLayout>
+          <div className="text-sm text-gray-500 space-y-2">
+            <p className="font-semibold text-gray-700">Design Notes</p>
+            <ul className="list-disc ml-5 space-y-1">
+              <li>Dropdown for recurrence type selection.</li>
+              <li>Inline radio buttons with input fields for OR logic.</li>
+              <li>Disabled state on unselected radio option fields.</li>
+            </ul>
           </div>
-          <div className="p-6 overflow-y-auto" style={{ height: '350px' }}>
-            <RepeatTimerSection />
-          </div>
-          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-            <ButtonWidget label="CANCEL" style="OUTLINE" color="ACCENT" size="SMALL" className="rounded-none" />
-            <ButtonWidget label="OK" style="SOLID" color="ACCENT" size="SMALL" className="rounded-none" />
-          </div>
-        </CardLayout>
-      </div>
+        </div>
 
-      <div className="max-w-lg text-sm text-gray-500 space-y-2">
-        <p className="font-semibold text-gray-700">Design Notes</p>
-        <ul className="list-disc ml-5 space-y-1">
-          <li>Every numeric field has a formula button that opens the expression editor dialog.</li>
-          <li>Five recurrence types: Daily, Weekly, Monthly, Yearly, Interval — each with contextual sub-options.</li>
-          <li>Daily and Monthly use radio buttons for OR logic (e.g., "every N days" vs. "every weekday").</li>
-          <li>Time of Day and Timezone appear for all types except Interval.</li>
-          <li>The entire section is hidden behind a "Repeat timer" checkbox to save space.</li>
-        </ul>
+        {/* V2 */}
+        <TimerRecurrenceMockupsV2 />
       </div>
     </div>
   )
