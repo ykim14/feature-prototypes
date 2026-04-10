@@ -18,6 +18,7 @@ export const navTree: NavNode[] = [
                 name: 'Timer Events in Autoscale: Timer Recurrence',
                 children: [
                   { name: 'Feature Card', path: '/process-events/timer-recurrence-requirements' },
+                  { name: 'Mockups', path: '/process-events/timer-recurrence-mockups' },
                 ],
               },
             ],

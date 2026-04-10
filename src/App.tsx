@@ -8,6 +8,7 @@ import TaskDashboard from './pages/sailwind-starter/task-dashboard'
 import ApplicationStatus from './pages/sailwind-starter/application-status'
 import DocumentReview from './pages/sailwind-starter/document-review'
 import TimerRecurrenceRequirements from './pages/[PO] Process Events - Features/timer-recurrence/timer-recurrence-requirements'
+import TimerRecurrenceMockups from './pages/[PO] Process Events - Features/timer-recurrence/mockups'
 import NotFound from './pages/sailwind-starter/not-found'
 
 const pages = [
@@ -17,6 +18,7 @@ const pages = [
   { path: '/application-status', component: ApplicationStatus },
   { path: '/document-review', component: DocumentReview },
   { path: '/process-events/timer-recurrence-requirements', component: TimerRecurrenceRequirements },
+  { path: '/process-events/timer-recurrence-mockups', component: TimerRecurrenceMockups },
 ]
 
 function App() {

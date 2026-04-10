@@ -30,3 +30,9 @@ Common name mistakes to avoid:
 - ❌ `Heading` → ✅ `HeadingField`
 - ❌ `Tabs` → ✅ `TabsField`
 - ❌ `Tag` → ✅ `TagField`
+
+## Mandatory: Sailwind-Only Components
+
+When generating prototypes and mockups, you MUST use Sailwind components listed above. Do NOT use raw HTML elements (`<input>`, `<select>`, `<button>`, `<label>`, etc.) when a Sailwind equivalent exists.
+
+If no appropriate Sailwind component exists for a UI need, STOP and flag it to the user before writing any custom HTML or CSS. Explain what's missing and ask for approval before proceeding with a workaround.
