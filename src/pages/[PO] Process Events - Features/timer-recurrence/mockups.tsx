@@ -36,7 +36,7 @@ function FormulaTextField({ label, placeholder, disabled, value, onChange }: { l
     }
   }
   return (
-    <div className="flex items-center gap-0.5">
+    <div className={`flex gap-0.5 ${label ? 'items-end' : 'items-center'}`}>
       <div className="flex-1">
         <TextField
           label={label}
@@ -53,10 +53,10 @@ function FormulaTextField({ label, placeholder, disabled, value, onChange }: { l
   )
 }
 
-function FormulaDropdown({ label, options }: { label?: string; options: string[] }) {
-  const [val, setVal] = useState(options[0])
+function FormulaDropdown({ label, options, placeholder }: { label?: string; options: string[]; placeholder?: string }) {
+  const [val, setVal] = useState<string | undefined>(undefined)
   return (
-    <div className="flex items-center gap-0.5">
+    <div className={`flex gap-0.5 ${label ? 'items-end' : 'items-center'}`}>
       <div className="flex-1">
         <DropdownField
           label={label}
@@ -64,6 +64,7 @@ function FormulaDropdown({ label, options }: { label?: string; options: string[]
           choiceValues={options}
           value={val}
           onChange={setVal}
+          placeholder={placeholder || 'Select...'}
           labelPosition={label ? 'ABOVE' : 'COLLAPSED'}
           marginBelow="NONE"
         />
