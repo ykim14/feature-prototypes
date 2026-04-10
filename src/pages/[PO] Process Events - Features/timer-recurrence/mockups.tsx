@@ -7,7 +7,6 @@ import {
   TextField,
   DropdownField,
   CheckboxField,
-  RadioButtonField,
   CardLayout,
 } from '@pglevy/sailwind'
 
@@ -25,18 +24,28 @@ function FormulaButton() {
   )
 }
 
-function FormulaTextField({ label, placeholder }: { label?: string; placeholder: string }) {
-  const [val, setVal] = useState('')
+function FormulaTextField({ label, placeholder, disabled, value, onChange }: { label?: string; placeholder: string; disabled?: boolean; value?: string; onChange?: (v: string) => void }) {
+  const [localVal, setLocalVal] = useState<string | undefined>(undefined)
+  const controlled = value !== undefined && onChange !== undefined
+  const displayVal = controlled ? value : (localVal ?? '')
+  const handleChange = (v: string) => {
+    if (controlled) {
+      onChange!(v)
+    } else {
+      setLocalVal(v || undefined)
+    }
+  }
   return (
-    <div className="flex items-end gap-0.5">
+    <div className="flex items-center gap-0.5">
       <div className="flex-1">
         <TextField
           label={label}
           placeholder={placeholder}
-          value={val}
-          onChange={setVal}
+          value={displayVal}
+          onChange={handleChange}
           labelPosition={label ? 'ABOVE' : 'COLLAPSED'}
           marginBelow="NONE"
+          disabled={disabled}
         />
       </div>
       <FormulaButton />
@@ -47,7 +56,7 @@ function FormulaTextField({ label, placeholder }: { label?: string; placeholder:
 function FormulaDropdown({ label, options }: { label?: string; options: string[] }) {
   const [val, setVal] = useState(options[0])
   return (
-    <div className="flex items-end gap-0.5">
+    <div className="flex items-center gap-0.5">
       <div className="flex-1">
         <DropdownField
           label={label}
@@ -67,21 +76,17 @@ function FormulaDropdown({ label, options }: { label?: string; options: string[]
 function DailySettings() {
   const [mode, setMode] = useState('every_n_days')
   return (
-    <div className="space-y-3">
-      <RadioButtonField
-        choiceLabels={['Every ___ day(s)', 'Every weekday']}
-        choiceValues={['every_n_days', 'every_weekday']}
-        value={mode}
-        onChange={setMode}
-        labelPosition="COLLAPSED"
-        choiceLayout="STACKED"
-        marginBelow="NONE"
-      />
-      {mode === 'every_n_days' && (
-        <div className="ml-6 w-24">
-          <FormulaTextField placeholder="1" />
-        </div>
-      )}
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <input type="radio" name="daily-mode" checked={mode === 'every_n_days'} onChange={() => setMode('every_n_days')} className="h-4 w-4 shrink-0 cursor-pointer" />
+        <span className="text-sm text-gray-700">Every</span>
+        <div className="w-20"><FormulaTextField placeholder="1" /></div>
+        <span className="text-sm text-gray-600">day(s)</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <input type="radio" name="daily-mode" checked={mode === 'every_weekday'} onChange={() => setMode('every_weekday')} className="h-4 w-4 shrink-0 cursor-pointer" />
+        <span className="text-sm text-gray-700">Every weekday</span>
+      </div>
     </div>
   )
 }
@@ -94,10 +99,10 @@ function WeeklySettings() {
 
   return (
     <div className="space-y-3">
-      <div className="flex items-end gap-2">
-        <span className="text-sm text-gray-700 pb-2">Recur every</span>
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-gray-700">Recur every</span>
         <div className="w-20"><FormulaTextField placeholder="1" /></div>
-        <span className="text-sm text-gray-600 pb-2">week(s) on:</span>
+        <span className="text-sm text-gray-600">week(s) on:</span>
       </div>
       <div className="flex gap-1.5">
         {days.map((d) => (
@@ -116,52 +121,49 @@ function WeeklySettings() {
 
 function MonthlySettings() {
   const [mode, setMode] = useState('day_of_month')
+  const [dayOfMonth, setDayOfMonth] = useState('')
+  const [everyNMonths1, setEveryNMonths1] = useState('')
+  const [nthOrdinal, setNthOrdinal] = useState('First')
+  const [nthWeekday, setNthWeekday] = useState('Monday')
+  const [everyNMonths2, setEveryNMonths2] = useState('')
+
+  const switchMode = (newMode: string) => {
+    if (newMode !== mode) {
+      if (newMode === 'day_of_month') {
+        setNthOrdinal('First')
+        setNthWeekday('Monday')
+        setEveryNMonths2('')
+      } else {
+        setDayOfMonth('')
+        setEveryNMonths1('')
+      }
+      setMode(newMode)
+    }
+  }
+
   return (
-    <div className="space-y-3">
-      <RadioButtonField
-        choiceLabels={['Day ___ of every ___ month(s)', 'The [nth] [weekday] of every ___ month(s)']}
-        choiceValues={['day_of_month', 'nth_weekday']}
-        value={mode}
-        onChange={setMode}
-        labelPosition="COLLAPSED"
-        choiceLayout="STACKED"
-        marginBelow="NONE"
-      />
-      {mode === 'day_of_month' && (
-        <div className="ml-6 flex items-end gap-2">
-          <span className="text-sm text-gray-700 pb-2">Day</span>
-          <div className="w-16"><FormulaTextField placeholder="1" /></div>
-          <span className="text-sm text-gray-600 pb-2">of every</span>
-          <div className="w-16"><FormulaTextField placeholder="1" /></div>
-          <span className="text-sm text-gray-600 pb-2">month(s)</span>
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <input type="radio" name="monthly-mode" checked={mode === 'day_of_month'} onChange={() => switchMode('day_of_month')} className="h-4 w-4 shrink-0 cursor-pointer" />
+        <span className={`text-sm ${mode === 'day_of_month' ? 'text-gray-700' : 'text-gray-400'}`}>Day</span>
+        <div className="w-20"><FormulaTextField placeholder="1" disabled={mode !== 'day_of_month'} value={dayOfMonth} onChange={setDayOfMonth} /></div>
+        <span className={`text-sm ${mode === 'day_of_month' ? 'text-gray-600' : 'text-gray-400'}`}>of every</span>
+        <div className="w-20"><FormulaTextField placeholder="1" disabled={mode !== 'day_of_month'} value={everyNMonths1} onChange={setEveryNMonths1} /></div>
+        <span className={`text-sm ${mode === 'day_of_month' ? 'text-gray-600' : 'text-gray-400'}`}>month(s)</span>
+      </div>
+      <div className="flex items-center gap-2 flex-wrap">
+        <input type="radio" name="monthly-mode" checked={mode === 'nth_weekday'} onChange={() => switchMode('nth_weekday')} className="h-4 w-4 shrink-0 cursor-pointer" />
+        <span className={`text-sm ${mode === 'nth_weekday' ? 'text-gray-700' : 'text-gray-400'}`}>The</span>
+        <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+          <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value={nthOrdinal} onChange={setNthOrdinal} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
         </div>
-      )}
-      {mode === 'nth_weekday' && (
-        <div className="ml-6 flex items-end gap-2 flex-wrap">
-          <span className="text-sm text-gray-700 pb-2">The</span>
-          <div className="w-28">
-            <DropdownField
-              choiceLabels={['First', 'Second', 'Third', 'Fourth', 'Last']}
-              choiceValues={['First', 'Second', 'Third', 'Fourth', 'Last']}
-              value="First"
-              labelPosition="COLLAPSED"
-              marginBelow="NONE"
-            />
-          </div>
-          <div className="w-32">
-            <DropdownField
-              choiceLabels={['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']}
-              choiceValues={['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']}
-              value="Monday"
-              labelPosition="COLLAPSED"
-              marginBelow="NONE"
-            />
-          </div>
-          <span className="text-sm text-gray-600 pb-2">of every</span>
-          <div className="w-16"><FormulaTextField placeholder="1" /></div>
-          <span className="text-sm text-gray-600 pb-2">month(s)</span>
+        <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
+          <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value={nthWeekday} onChange={setNthWeekday} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
         </div>
-      )}
+        <span className={`text-sm ${mode === 'nth_weekday' ? 'text-gray-600' : 'text-gray-400'}`}>of every</span>
+        <div className="w-20"><FormulaTextField placeholder="1" disabled={mode !== 'nth_weekday'} value={everyNMonths2} onChange={setEveryNMonths2} /></div>
+        <span className={`text-sm ${mode === 'nth_weekday' ? 'text-gray-600' : 'text-gray-400'}`}>month(s)</span>
+      </div>
     </div>
   )
 }
@@ -169,51 +171,60 @@ function MonthlySettings() {
 function YearlySettings() {
   const [mode, setMode] = useState('specific_date')
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December']
+  const [specificMonth, setSpecificMonth] = useState('January')
+  const [specificDay, setSpecificDay] = useState('')
+  const [nthOrdinal, setNthOrdinal] = useState('First')
+  const [nthWeekday, setNthWeekday] = useState('Monday')
+  const [nthMonth, setNthMonth] = useState('January')
+
+  const switchMode = (newMode: string) => {
+    if (newMode !== mode) {
+      if (newMode === 'specific_date') {
+        setNthOrdinal('First')
+        setNthWeekday('Monday')
+        setNthMonth('January')
+      } else {
+        setSpecificMonth('January')
+        setSpecificDay('')
+      }
+      setMode(newMode)
+    }
+  }
+
   return (
-    <div className="space-y-3">
-      <RadioButtonField
-        choiceLabels={['Every [month] [day]', 'The [nth] [weekday] of [month]']}
-        choiceValues={['specific_date', 'nth_weekday']}
-        value={mode}
-        onChange={setMode}
-        labelPosition="COLLAPSED"
-        choiceLayout="STACKED"
-        marginBelow="NONE"
-      />
-      {mode === 'specific_date' && (
-        <div className="ml-6 flex items-end gap-2">
-          <span className="text-sm text-gray-700 pb-2">Every</span>
-          <div className="w-36">
-            <DropdownField choiceLabels={months} choiceValues={months} value="January" labelPosition="COLLAPSED" marginBelow="NONE" />
-          </div>
-          <div className="w-16"><FormulaTextField placeholder="1" /></div>
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <input type="radio" name="yearly-mode" checked={mode === 'specific_date'} onChange={() => switchMode('specific_date')} className="h-4 w-4 shrink-0 cursor-pointer" />
+        <span className={`text-sm ${mode === 'specific_date' ? 'text-gray-700' : 'text-gray-400'}`}>Every</span>
+        <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+          <DropdownField choiceLabels={months} choiceValues={months} value={specificMonth} onChange={setSpecificMonth} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'specific_date'} />
         </div>
-      )}
-      {mode === 'nth_weekday' && (
-        <div className="ml-6 flex items-end gap-2 flex-wrap">
-          <span className="text-sm text-gray-700 pb-2">The</span>
-          <div className="w-28">
-            <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value="First" labelPosition="COLLAPSED" marginBelow="NONE" />
-          </div>
-          <div className="w-32">
-            <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value="Monday" labelPosition="COLLAPSED" marginBelow="NONE" />
-          </div>
-          <span className="text-sm text-gray-600 pb-2">of</span>
-          <div className="w-36">
-            <DropdownField choiceLabels={months} choiceValues={months} value="January" labelPosition="COLLAPSED" marginBelow="NONE" />
-          </div>
+        <div className="w-20"><FormulaTextField placeholder="1" value={specificDay} onChange={setSpecificDay} disabled={mode !== 'specific_date'} /></div>
+      </div>
+      <div className="flex items-center gap-2 flex-wrap">
+        <input type="radio" name="yearly-mode" checked={mode === 'nth_weekday'} onChange={() => switchMode('nth_weekday')} className="h-4 w-4 shrink-0 cursor-pointer" />
+        <span className={`text-sm ${mode === 'nth_weekday' ? 'text-gray-700' : 'text-gray-400'}`}>The</span>
+        <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+          <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value={nthOrdinal} onChange={setNthOrdinal} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
         </div>
-      )}
+        <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
+          <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value={nthWeekday} onChange={setNthWeekday} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
+        </div>
+        <span className={`text-sm ${mode === 'nth_weekday' ? 'text-gray-600' : 'text-gray-400'}`}>of</span>
+        <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+          <DropdownField choiceLabels={months} choiceValues={months} value={nthMonth} onChange={setNthMonth} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
+        </div>
+      </div>
     </div>
   )
 }
 
 function IntervalSettings() {
   return (
-    <div className="flex items-end gap-2">
-      <span className="text-sm text-gray-700 pb-2">Every</span>
+    <div className="flex items-center gap-2">
+      <span className="text-sm text-gray-700">Every</span>
       <div className="w-20"><FormulaTextField placeholder="30" /></div>
-      <div className="w-28">
+      <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
         <DropdownField
           choiceLabels={['Minutes', 'Hours']}
           choiceValues={['Minutes', 'Hours']}
@@ -238,17 +249,20 @@ function RecurrenceSettings() {
 
   return (
     <div className="space-y-4">
-      <DropdownField
-        label="Repeat"
-        choiceLabels={types}
-        choiceValues={types}
-        value={type}
-        onChange={setType}
-        labelPosition="ABOVE"
-        marginBelow="NONE"
-      />
+      <div className="w-1/3 [&_svg.hover\:text-gray-700]:hidden">
+        <DropdownField
+          choiceLabels={types}
+          choiceValues={types}
+          value={type}
+          onChange={(v) => { if (v) setType(v) }}
+          placeholder="Daily"
+          required={true}
+          labelPosition="COLLAPSED"
+          marginBelow="NONE"
+        />
+      </div>
 
-      <div className="border-l-2 border-blue-200 pl-4">
+      <div>
         {type === 'Daily' && <DailySettings />}
         {type === 'Weekly' && <WeeklySettings />}
         {type === 'Monthly' && <MonthlySettings />}
@@ -274,7 +288,7 @@ function RepeatTimerSection() {
   return (
     <div className="space-y-3">
       <CheckboxField
-        choiceLabels={['Repeat timer']}
+        choiceLabels={['Repeat Timer Event']}
         choiceValues={[true]}
         value={enabled ? [true] : []}
         onChange={(val) => setEnabled(val.length > 0)}
@@ -312,7 +326,7 @@ export default function TimerRecurrenceMockups() {
           <div className="px-6 py-4 border-b border-gray-200">
             <HeadingField text="Timer Event" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="NONE" />
           </div>
-          <div className="p-6 overflow-y-auto" style={{ maxHeight: '400px' }}>
+          <div className="p-6 overflow-y-auto" style={{ height: '350px' }}>
             <RepeatTimerSection />
           </div>
           <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
