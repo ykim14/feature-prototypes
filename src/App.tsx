@@ -2,12 +2,13 @@ import { Route, Router, Switch } from 'wouter'
 import { useHashLocation } from 'wouter/use-hash-location'
 
 import Sidebar from './components/Sidebar'
-import Home from './pages/home'
-import Guidance from './pages/guidance'
-import TaskDashboard from './pages/task-dashboard'
-import ApplicationStatus from './pages/application-status'
-import DocumentReview from './pages/document-review'
-import NotFound from './pages/not-found'
+import Home from './pages/sailwind-starter/home'
+import Guidance from './pages/sailwind-starter/guidance'
+import TaskDashboard from './pages/sailwind-starter/task-dashboard'
+import ApplicationStatus from './pages/sailwind-starter/application-status'
+import DocumentReview from './pages/sailwind-starter/document-review'
+import TimerRecurrenceRequirements from './pages/[PO] Process Events - Features/timer-recurrence/timer-recurrence-requirements'
+import NotFound from './pages/sailwind-starter/not-found'
 
 const pages = [
   { path: '/', component: Home },
@@ -15,6 +16,7 @@ const pages = [
   { path: '/task-dashboard', component: TaskDashboard },
   { path: '/application-status', component: ApplicationStatus },
   { path: '/document-review', component: DocumentReview },
+  { path: '/process-events/timer-recurrence-requirements', component: TimerRecurrenceRequirements },
 ]
 
 function App() {
