@@ -25,7 +25,7 @@ function FormulaButton() {
 function FormulaTextField({ label, placeholder, disabled }: { label?: string; placeholder: string; disabled?: boolean }) {
   const [val, setVal] = useState<string | undefined>(undefined)
   return (
-    <div className={`flex gap-0.5 ${label ? 'items-end' : 'items-center'}`}>
+    <div className={`flex gap-0.5 ${label ? 'items-end' : 'items-center'} ${disabled ? '[&_input]:bg-gray-50 opacity-50' : ''}`}>
       <div className="flex-1">
         <TextField
           label={label}
@@ -45,7 +45,7 @@ function FormulaTextField({ label, placeholder, disabled }: { label?: string; pl
 function FormulaDropdown({ label, options, placeholder, disabled }: { label?: string; options: string[]; placeholder?: string; disabled?: boolean }) {
   const [val, setVal] = useState<string | undefined>(undefined)
   return (
-    <div className={`flex gap-0.5 ${label ? 'items-end' : 'items-center'}`}>
+    <div className={`flex gap-0.5 ${label ? 'items-end' : 'items-center'} ${disabled ? '[&_button]:bg-gray-50' : ''}`}>
       <div className="flex-1">
         <DropdownField
           label={label}
@@ -68,7 +68,11 @@ function DailyTab() {
   const [weekdaysOnly, setWeekdaysOnly] = useState(false)
   return (
     <div className="space-y-4">
-      <FormulaTextField label="Repeat every ___ day(s)" placeholder="1" disabled={weekdaysOnly} />
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-gray-900">Repeat every</span>
+        <div className="w-20"><FormulaTextField placeholder="1" disabled={weekdaysOnly} /></div>
+        <span className="text-sm text-gray-900">day(s)</span>
+      </div>
       <SwitchField
         label="Weekdays only"
         labelPosition="ADJACENT"
@@ -85,7 +89,11 @@ function WeeklyTab() {
   const [selectedDays, setSelectedDays] = useState<string[]>([])
   return (
     <div className="space-y-4">
-      <FormulaTextField label="Repeat every ___ week(s)" placeholder="1" />
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-gray-900">Repeat every</span>
+        <div className="w-20"><FormulaTextField placeholder="1" /></div>
+        <span className="text-sm text-gray-900">week(s)</span>
+      </div>
       <CheckboxField
         label="On these days"
         choiceLabels={days}
@@ -113,9 +121,14 @@ function MonthlyTab() {
         marginBelow="NONE"
       />
       {!useNth ? (
-        <div className="grid grid-cols-2 gap-3">
-          <FormulaTextField label="Day of month" placeholder="1" />
-          <FormulaTextField label="Every ___ month(s)" placeholder="1" />
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-900">Day</span>
+            <div className="w-20"><FormulaTextField placeholder="1" /></div>
+            <span className="text-sm text-gray-900">of every</span>
+            <div className="w-20"><FormulaTextField placeholder="1" /></div>
+            <span className="text-sm text-gray-900">month(s)</span>
+          </div>
         </div>
       ) : (
         <div className="space-y-3">
@@ -123,7 +136,11 @@ function MonthlyTab() {
             <FormulaDropdown label="Occurrence" options={ordinals} placeholder="Select..." />
             <FormulaDropdown label="Day of week" options={weekdays} placeholder="Select..." />
           </div>
-          <FormulaTextField label="Every ___ month(s)" placeholder="1" />
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-900">Every</span>
+            <div className="w-20"><FormulaTextField placeholder="1" /></div>
+            <span className="text-sm text-gray-900">month(s)</span>
+          </div>
         </div>
       )}
     </div>
@@ -165,9 +182,18 @@ function YearlyTab() {
 function IntervalTab() {
   const units = ['Minutes', 'Hours']
   return (
-    <div className="grid grid-cols-2 gap-3">
-      <FormulaTextField label="Repeat every" placeholder="30" />
-      <FormulaDropdown label="Unit" options={units} placeholder="Select..." />
+    <div className="flex items-center gap-2">
+      <span className="text-sm text-gray-900">Repeat every</span>
+      <div className="w-20"><FormulaTextField placeholder="30" /></div>
+      <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+        <DropdownField
+          choiceLabels={units}
+          choiceValues={units}
+          value="Minutes"
+          labelPosition="COLLAPSED"
+          marginBelow="NONE"
+        />
+      </div>
     </div>
   )
 }
@@ -183,7 +209,7 @@ function RecurrenceContent() {
   const types = ['Daily', 'Weekly', 'Monthly', 'Yearly', 'Interval']
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <RadioButtonField
         choiceLabels={types}
         choiceValues={types}
@@ -191,7 +217,8 @@ function RecurrenceContent() {
         onChange={setActiveType}
         choiceLayout="COMPACT"
         labelPosition="COLLAPSED"
-        marginBelow="NONE"
+        marginAbove="STANDARD"
+        marginBelow="STANDARD"
       />
 
       <div>
