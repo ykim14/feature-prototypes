@@ -300,6 +300,7 @@ function RepeatTimerSection() {
 
 import { TimerRecurrenceMockupsV2 } from './mockups-v2'
 import { TimerRecurrenceMockupsV3 } from './mockups-v3'
+import { TimerRecurrenceMockupsV4 } from './mockups-v4'
 
 export default function TimerRecurrenceMockups() {
   return (
@@ -351,6 +352,9 @@ export default function TimerRecurrenceMockups() {
 
         {/* V3 */}
         <TimerRecurrenceMockupsV3 />
+
+        {/* V4 */}
+        <TimerRecurrenceMockupsV4 />
       </div>
     </div>
   )

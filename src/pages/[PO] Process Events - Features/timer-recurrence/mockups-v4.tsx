@@ -204,130 +204,158 @@ const timezones = [
 ]
 
 function RepeatTimerSection() {
-  const [repeatType, setRepeatType] = useState('Never')
+  const [repeatMode, setRepeatMode] = useState('Never')
+  const [unit, setUnit] = useState('Day(s)')
   const [useNth, setUseNth] = useState(false)
-  const [useNthYearly, setUseNthYearly] = useState(false)
   const [selectedDays, setSelectedDays] = useState<string[]>([])
-  const types = ['Never', 'Daily', 'Every weekday', 'Weekly', 'Monthly', 'Yearly', 'Custom interval']
+  const modes = ['Never', 'Daily', 'Weekdays', 'Custom interval']
+  const units = ['Day(s)', 'Week(s)', 'Month(s)', 'Year(s)', 'Minute(s)', 'Hour(s)']
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December']
+
+  const resetSubSettings = () => {
+    setUnit('Day(s)')
+    setUseNth(false)
+    setSelectedDays([])
+  }
+
+  const handleModeChange = (v: string) => {
+    if (v) {
+      setRepeatMode(v)
+      resetSubSettings()
+    }
+  }
+
+  const handleUnitChange = (v: string) => {
+    if (v) {
+      setUnit(v)
+      setUseNth(false)
+      setSelectedDays([])
+    }
+  }
+
+  const showTimeSettings = repeatMode === 'Daily' || repeatMode === 'Weekdays' || 
+    (repeatMode === 'Custom interval' && unit !== 'Minute(s)' && unit !== 'Hour(s)')
 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
         <span className="text-base text-gray-900">Repeat</span>
-        <div className="w-48 [&_svg.hover\:text-gray-700]:hidden">
+        <div className="w-44 [&_svg.hover\:text-gray-700]:hidden">
           <DropdownField
-            choiceLabels={types}
-            choiceValues={types}
-            value={repeatType}
-            onChange={(v) => { if (v) setRepeatType(v) }}
+            choiceLabels={modes}
+            choiceValues={modes}
+            value={repeatMode}
+            onChange={(v) => handleModeChange(v)}
             labelPosition="COLLAPSED"
             marginBelow="NONE"
           />
         </div>
-        {(repeatType === 'Daily' || repeatType === 'Weekly' || repeatType === 'Monthly' || repeatType === 'Yearly' || repeatType === 'Custom interval') && (
-          <>
-            <span className="text-base text-gray-900">every</span>
-            <div className="w-24"><FormulaTextField placeholder="1" /></div>
-          </>
-        )}
-        {repeatType === 'Daily' && <span className="text-base text-gray-900">day(s)</span>}
-        {repeatType === 'Weekly' && <span className="text-base text-gray-900">week(s) on</span>}
-        {repeatType === 'Monthly' && <span className="text-base text-gray-900">month(s) on</span>}
-        {repeatType === 'Yearly' && <span className="text-base text-gray-900">year(s) on</span>}
-        {repeatType === 'Custom interval' && (
-          <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
-            <DropdownField
-              choiceLabels={['Minutes', 'Hours']}
-              choiceValues={['Minutes', 'Hours']}
-              value="Minutes"
-              labelPosition="COLLAPSED"
-              marginBelow="NONE"
-            />
-          </div>
-        )}
       </div>
 
-      {repeatType === 'Weekly' && (
-        <div className="flex gap-1.5">
-          {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((d) => (
-            <button
-              key={d}
-              onClick={() => setSelectedDays((prev) => prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d])}
-              className={`px-2.5 py-1 text-xs rounded border font-medium ${selectedDays.includes(d) ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'}`}
-            >
-              {d}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {repeatType === 'Monthly' && (
-        <div className="flex items-center gap-2 flex-wrap">
-          <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
-            <DropdownField
-              choiceLabels={['Day of month', 'Day of week']}
-              choiceValues={['day_of_month', 'day_of_week']}
-              value={useNth ? 'day_of_week' : 'day_of_month'}
-              onChange={(v) => setUseNth(v === 'day_of_week')}
-              labelPosition="COLLAPSED"
-              marginBelow="NONE"
-            />
-          </div>
-          {!useNth ? (
+      {repeatMode === 'Custom interval' && (
+        <div className="space-y-6">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-base text-gray-900">Recur every</span>
             <div className="w-24"><FormulaTextField placeholder="1" /></div>
-          ) : (
-            <>
-              <span className="text-base text-gray-900">the</span>
-              <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
-                <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value="First" labelPosition="COLLAPSED" marginBelow="NONE" />
-              </div>
-              <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
-                <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value="Monday" labelPosition="COLLAPSED" marginBelow="NONE" />
-              </div>
-            </>
-          )}
-        </div>
-      )}
-
-      {repeatType === 'Yearly' && (
-        <div className="flex items-center gap-2 flex-wrap">
-          <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
-            <DropdownField
-              choiceLabels={['Day of month', 'Day of week']}
-              choiceValues={['day_of_month', 'day_of_week']}
-              value={useNthYearly ? 'day_of_week' : 'day_of_month'}
-              onChange={(v) => setUseNthYearly(v === 'day_of_week')}
-              labelPosition="COLLAPSED"
-              marginBelow="NONE"
-            />
+            <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
+              <DropdownField
+                choiceLabels={units}
+                choiceValues={units}
+                value={unit}
+                onChange={(v) => handleUnitChange(v)}
+                labelPosition="COLLAPSED"
+                marginBelow="NONE"
+              />
+            </div>
           </div>
-          {!useNthYearly ? (
-            <>
+
+          {unit === 'Week(s)' && (
+            <div className="flex items-center gap-2">
+              <span className="text-base text-gray-900">on</span>
+              <div className="flex gap-1.5">
+              {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setSelectedDays((prev) => prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d])}
+                  className={`px-2.5 py-1 text-xs rounded border font-medium ${selectedDays.includes(d) ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'}`}
+                >
+                  {d}
+                </button>
+              ))}
+              </div>
+            </div>
+          )}
+
+          {unit === 'Month(s)' && (
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-base text-gray-900">on</span>
               <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
-                <DropdownField choiceLabels={months} choiceValues={months} value="January" labelPosition="COLLAPSED" marginBelow="NONE" />
+                <DropdownField
+                  choiceLabels={['Day of month', 'Day of week']}
+                  choiceValues={['day_of_month', 'day_of_week']}
+                  value={useNth ? 'day_of_week' : 'day_of_month'}
+                  onChange={(v) => setUseNth(v === 'day_of_week')}
+                  labelPosition="COLLAPSED"
+                  marginBelow="NONE"
+                />
               </div>
-              <div className="w-24"><FormulaTextField placeholder="1" /></div>
-            </>
-          ) : (
-            <>
-              <span className="text-base text-gray-900">the</span>
-              <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
-                <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value="First" labelPosition="COLLAPSED" marginBelow="NONE" />
-              </div>
-              <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
-                <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value="Monday" labelPosition="COLLAPSED" marginBelow="NONE" />
-              </div>
-              <span className="text-base text-gray-900">of</span>
+              {!useNth ? (
+                <div className="w-24"><FormulaTextField placeholder="1" /></div>
+              ) : (
+                <>
+                  <span className="text-base text-gray-900">the</span>
+                  <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+                    <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value="First" labelPosition="COLLAPSED" marginBelow="NONE" />
+                  </div>
+                  <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
+                    <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value="Monday" labelPosition="COLLAPSED" marginBelow="NONE" />
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {unit === 'Year(s)' && (
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-base text-gray-900">on</span>
               <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
-                <DropdownField choiceLabels={months} choiceValues={months} value="January" labelPosition="COLLAPSED" marginBelow="NONE" />
+                <DropdownField
+                  choiceLabels={['Day of month', 'Day of week']}
+                  choiceValues={['day_of_month', 'day_of_week']}
+                  value={useNth ? 'day_of_week' : 'day_of_month'}
+                  onChange={(v) => setUseNth(v === 'day_of_week')}
+                  labelPosition="COLLAPSED"
+                  marginBelow="NONE"
+                />
               </div>
-            </>
+              {!useNth ? (
+                <>
+                  <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+                    <DropdownField choiceLabels={months} choiceValues={months} value="January" labelPosition="COLLAPSED" marginBelow="NONE" />
+                  </div>
+                  <div className="w-24"><FormulaTextField placeholder="1" /></div>
+                </>
+              ) : (
+                <>
+                  <span className="text-base text-gray-900">the</span>
+                  <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+                    <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value="First" labelPosition="COLLAPSED" marginBelow="NONE" />
+                  </div>
+                  <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
+                    <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value="Monday" labelPosition="COLLAPSED" marginBelow="NONE" />
+                  </div>
+                  <span className="text-base text-gray-900">of</span>
+                  <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+                    <DropdownField choiceLabels={months} choiceValues={months} value="January" labelPosition="COLLAPSED" marginBelow="NONE" />
+                  </div>
+                </>
+              )}
+            </div>
           )}
         </div>
       )}
 
-      {repeatType !== 'Never' && repeatType !== 'Custom interval' && (
+      {showTimeSettings && (
         <div className="border-t border-gray-200 pt-4">
           <div className="grid grid-cols-2 gap-3">
             <FormulaTextField label="Time of Day" placeholder="09:00 AM" />
@@ -339,10 +367,10 @@ function RepeatTimerSection() {
   )
 }
 
-export function TimerRecurrenceMockupsV3() {
+export function TimerRecurrenceMockupsV4() {
   return (
     <div>
-      <HeadingField text="Option C" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="STANDARD" />
+      <HeadingField text="Option D" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="STANDARD" />
       <div className="grid grid-cols-2 gap-6 items-start">
         <CardLayout padding="NONE" showShadow={false} shape="SQUARED">
           <div className="px-6 py-4 border-b border-gray-200">
