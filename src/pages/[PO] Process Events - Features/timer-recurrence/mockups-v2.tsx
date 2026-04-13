@@ -68,18 +68,23 @@ function DailyTab() {
   const [weekdaysOnly, setWeekdaysOnly] = useState(false)
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-gray-900">Repeat every</span>
-        <div className="w-20"><FormulaTextField placeholder="1" disabled={weekdaysOnly} /></div>
-        <span className="text-sm text-gray-900">day(s)</span>
+      <div className="flex items-center gap-3">
+        <div className="[&>div]:mb-0 [&>div]:leading-none">
+          <SwitchField
+            value={weekdaysOnly}
+            onChange={setWeekdaysOnly}
+            labelPosition="COLLAPSED"
+            marginBelow="NONE"
+            size="SMALL"
+          />
+        </div>
+        <span className="text-base text-gray-900">Only weekdays</span>
       </div>
-      <SwitchField
-        label="Weekdays only"
-        labelPosition="ADJACENT"
-        value={weekdaysOnly}
-        onChange={setWeekdaysOnly}
-        marginBelow="NONE"
-      />
+      <div className="flex items-center gap-2">
+        <span className="text-base text-gray-900">Repeat every</span>
+        <div className="w-20"><FormulaTextField placeholder="1" disabled={weekdaysOnly} /></div>
+        <span className="text-base text-gray-900">day(s)</span>
+      </div>
     </div>
   )
 }
@@ -90,17 +95,17 @@ function WeeklyTab() {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <span className="text-sm text-gray-900">Repeat every</span>
+        <span className="text-base text-gray-900">Repeat every</span>
         <div className="w-20"><FormulaTextField placeholder="1" /></div>
-        <span className="text-sm text-gray-900">week(s)</span>
+        <span className="text-base text-gray-900">week(s) on</span>
       </div>
       <CheckboxField
-        label="On these days"
         choiceLabels={days}
         choiceValues={days}
         value={selectedDays}
         onChange={setSelectedDays}
         choiceLayout="COMPACT"
+        labelPosition="COLLAPSED"
         marginBelow="NONE"
       />
     </div>
@@ -113,21 +118,26 @@ function MonthlyTab() {
   const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
   return (
     <div className="space-y-4">
-      <SwitchField
-        label="Use nth weekday pattern"
-        labelPosition="ADJACENT"
-        value={useNth}
-        onChange={setUseNth}
-        marginBelow="NONE"
-      />
+      <div className="flex items-center gap-3">
+        <div className="[&>div]:mb-0 [&>div]:leading-none">
+          <SwitchField
+            value={useNth}
+            onChange={setUseNth}
+            labelPosition="COLLAPSED"
+            marginBelow="NONE"
+            size="SMALL"
+          />
+        </div>
+        <span className="text-base text-gray-900">Use nth weekday pattern</span>
+      </div>
       {!useNth ? (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-900">Day</span>
+            <span className="text-base text-gray-900">Day</span>
             <div className="w-20"><FormulaTextField placeholder="1" /></div>
-            <span className="text-sm text-gray-900">of every</span>
+            <span className="text-base text-gray-900">of every</span>
             <div className="w-20"><FormulaTextField placeholder="1" /></div>
-            <span className="text-sm text-gray-900">month(s)</span>
+            <span className="text-base text-gray-900">month(s)</span>
           </div>
         </div>
       ) : (
@@ -137,9 +147,9 @@ function MonthlyTab() {
             <FormulaDropdown label="Day of week" options={weekdays} placeholder="Select..." />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-900">Every</span>
+            <span className="text-base text-gray-900">Every</span>
             <div className="w-20"><FormulaTextField placeholder="1" /></div>
-            <span className="text-sm text-gray-900">month(s)</span>
+            <span className="text-base text-gray-900">month(s)</span>
           </div>
         </div>
       )}
@@ -154,13 +164,18 @@ function YearlyTab() {
   const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
   return (
     <div className="space-y-4">
-      <SwitchField
-        label="Use nth weekday pattern"
-        labelPosition="ADJACENT"
-        value={useNth}
-        onChange={setUseNth}
-        marginBelow="NONE"
-      />
+      <div className="flex items-center gap-3">
+        <div className="[&>div]:mb-0 [&>div]:leading-none">
+          <SwitchField
+            value={useNth}
+            onChange={setUseNth}
+            labelPosition="COLLAPSED"
+            marginBelow="NONE"
+            size="SMALL"
+          />
+        </div>
+        <span className="text-base text-gray-900">Use nth weekday pattern</span>
+      </div>
       {!useNth ? (
         <div className="grid grid-cols-2 gap-3">
           <FormulaDropdown label="Month" options={months} placeholder="Select..." />
@@ -183,7 +198,7 @@ function IntervalTab() {
   const units = ['Minutes', 'Hours']
   return (
     <div className="flex items-center gap-2">
-      <span className="text-sm text-gray-900">Repeat every</span>
+      <span className="text-base text-gray-900">Repeat every</span>
       <div className="w-24"><FormulaTextField placeholder="30" /></div>
       <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
         <DropdownField
