@@ -208,7 +208,7 @@ function RepeatTimerSection() {
   const [useNth, setUseNth] = useState(false)
   const [useNthYearly, setUseNthYearly] = useState(false)
   const [selectedDays, setSelectedDays] = useState<string[]>([])
-  const types = ['Never', 'Daily', 'Every weekday', 'Weekly', 'Monthly', 'Yearly', 'Custom interval']
+  const types = ['Never', 'Daily', 'Every weekday', 'Weekly', 'Monthly', 'Yearly', 'Time interval']
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December']
 
   return (
@@ -225,7 +225,7 @@ function RepeatTimerSection() {
             marginBelow="NONE"
           />
         </div>
-        {(repeatType === 'Daily' || repeatType === 'Weekly' || repeatType === 'Monthly' || repeatType === 'Yearly' || repeatType === 'Custom interval') && (
+        {(repeatType === 'Daily' || repeatType === 'Weekly' || repeatType === 'Monthly' || repeatType === 'Yearly' || repeatType === 'Time interval') && (
           <>
             <span className="text-base text-gray-900">every</span>
             <div className="w-24"><FormulaTextField placeholder="1" /></div>
@@ -235,7 +235,7 @@ function RepeatTimerSection() {
         {repeatType === 'Weekly' && <span className="text-base text-gray-900">week(s) on</span>}
         {repeatType === 'Monthly' && <span className="text-base text-gray-900">month(s) on</span>}
         {repeatType === 'Yearly' && <span className="text-base text-gray-900">year(s) on</span>}
-        {repeatType === 'Custom interval' && (
+        {repeatType === 'Time interval' && (
           <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
             <DropdownField
               choiceLabels={['Minutes', 'Hours']}
@@ -327,7 +327,7 @@ function RepeatTimerSection() {
         </div>
       )}
 
-      {repeatType !== 'Never' && repeatType !== 'Custom interval' && (
+      {repeatType !== 'Never' && repeatType !== 'Time interval' && (
         <div className="border-t border-gray-200 pt-4">
           <div className="grid grid-cols-2 gap-3">
             <FormulaTextField label="Time of Day" placeholder="09:00 AM" />
@@ -359,9 +359,11 @@ export function TimerRecurrenceMockupsV3() {
         <div className="text-sm text-gray-500 space-y-2">
           <p className="font-semibold text-gray-700">Design Notes</p>
           <ul className="list-disc ml-5 space-y-1">
-            <li>Radio buttons for recurrence type — all options visible at once.</li>
-            <li>Switch toggles for OR logic (weekdays only, nth weekday pattern).</li>
-            <li>Form-driven grid layout with labeled fields.</li>
+            <li>Single "Repeat" dropdown with Never/Daily/Every weekday/Time interval options.</li>
+            <li>All settings read as inline sentences (e.g., "Repeat [Daily ▾] every [___] day(s)").</li>
+            <li>Day of month/week dropdown for monthly and yearly OR logic.</li>
+            <li>Day toggle buttons for weekly recurrence.</li>
+            <li>Formula button on all numeric inputs.</li>
           </ul>
         </div>
       </div>

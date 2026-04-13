@@ -339,9 +339,11 @@ export default function TimerRecurrenceMockups() {
             <div className="text-sm text-gray-500 space-y-2">
               <p className="font-semibold text-gray-700">Design Notes</p>
               <ul className="list-disc ml-5 space-y-1">
-                <li>Dropdown for recurrence type selection.</li>
-                <li>Inline radio buttons with input fields for OR logic.</li>
+                <li>"Repeat" dropdown with Never/Daily/Weekly/Monthly/Yearly/Interval options.</li>
+                <li>Inline radio buttons with input fields for Monthly/Yearly OR logic (day of month vs day of week).</li>
                 <li>Disabled state on unselected radio option fields.</li>
+                <li>Day toggle buttons for weekly recurrence.</li>
+                <li>Formula button on all numeric inputs.</li>
               </ul>
             </div>
           </div>

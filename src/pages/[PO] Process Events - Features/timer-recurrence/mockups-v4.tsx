@@ -387,9 +387,11 @@ export function TimerRecurrenceMockupsV4() {
         <div className="text-sm text-gray-500 space-y-2">
           <p className="font-semibold text-gray-700">Design Notes</p>
           <ul className="list-disc ml-5 space-y-1">
-            <li>Radio buttons for recurrence type — all options visible at once.</li>
-            <li>Switch toggles for OR logic (weekdays only, nth weekday pattern).</li>
-            <li>Form-driven grid layout with labeled fields.</li>
+            <li>"Repeat" dropdown with Never/Daily/Weekdays/Custom interval.</li>
+            <li>"Custom interval" reveals a second row: "Recur every [___] [unit ▾]".</li>
+            <li>Unit dropdown drives sub-settings (day toggles for weeks, day of month/week for months/years).</li>
+            <li>Changing a parent resets all child settings to defaults.</li>
+            <li>Formula button on all numeric inputs.</li>
           </ul>
         </div>
       </div>
