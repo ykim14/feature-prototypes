@@ -6,7 +6,6 @@ import {
   DropdownField,
   CheckboxField,
   SwitchField,
-  RadioButtonField,
   CardLayout,
 } from '@pglevy/sailwind'
 
@@ -65,26 +64,11 @@ function FormulaDropdown({ label, options, placeholder, disabled }: { label?: st
 }
 
 function DailyTab() {
-  const [weekdaysOnly, setWeekdaysOnly] = useState(false)
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-3">
-        <div className="[&>div]:mb-0 [&>div]:leading-none">
-          <SwitchField
-            value={weekdaysOnly}
-            onChange={setWeekdaysOnly}
-            labelPosition="COLLAPSED"
-            marginBelow="NONE"
-            size="SMALL"
-          />
-        </div>
-        <span className="text-base text-gray-900">Only weekdays</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <span className="text-base text-gray-900">Repeat every</span>
-        <div className="w-20"><FormulaTextField placeholder="1" disabled={weekdaysOnly} /></div>
-        <span className="text-base text-gray-900">day(s)</span>
-      </div>
+    <div className="flex items-center gap-2">
+      <span className="text-base text-gray-900">Repeat every</span>
+      <div className="w-20"><FormulaTextField placeholder="1" /></div>
+      <span className="text-base text-gray-900">day(s)</span>
     </div>
   )
 }
@@ -219,65 +203,53 @@ const timezones = [
   'Europe/Berlin', 'Asia/Tokyo', 'Asia/Shanghai', 'Asia/Kolkata', 'Australia/Sydney', 'UTC',
 ]
 
-function RecurrenceContent() {
-  const [activeType, setActiveType] = useState('Daily')
-  const types = ['Daily', 'Weekly', 'Monthly', 'Yearly', 'Interval']
+function RepeatTimerSection() {
+  const [repeatType, setRepeatType] = useState('Never')
+  const types = ['Never', 'Daily', 'Every Weekday', 'Weekly', 'Monthly', 'Yearly', 'Interval']
 
   return (
     <div className="space-y-6">
-      <RadioButtonField
-        choiceLabels={types}
-        choiceValues={types}
-        value={activeType}
-        onChange={setActiveType}
-        choiceLayout="COMPACT"
-        labelPosition="COLLAPSED"
-        marginAbove="STANDARD"
-        marginBelow="STANDARD"
-      />
-
-      <div>
-        {activeType === 'Daily' && <DailyTab />}
-        {activeType === 'Weekly' && <WeeklyTab />}
-        {activeType === 'Monthly' && <MonthlyTab />}
-        {activeType === 'Yearly' && <YearlyTab />}
-        {activeType === 'Interval' && <IntervalTab />}
+      <div className="w-1/2 [&_svg.hover\:text-gray-700]:hidden">
+        <DropdownField
+          label="Repeat"
+          choiceLabels={types}
+          choiceValues={types}
+          value={repeatType}
+          onChange={(v) => { if (v) setRepeatType(v) }}
+          required={true}
+          labelPosition="ABOVE"
+          marginBelow="NONE"
+        />
       </div>
 
-      {activeType !== 'Interval' && (
-        <div className="border-t border-gray-200 pt-4">
-          <div className="grid grid-cols-2 gap-3">
-            <FormulaTextField label="Time of Day" placeholder="09:00 AM" />
-            <FormulaDropdown label="Timezone" options={timezones} placeholder="Select timezone..." />
+      {repeatType !== 'Never' && (
+        <>
+          <div>
+            {repeatType === 'Daily' && <DailyTab />}
+            {repeatType === 'Weekly' && <WeeklyTab />}
+            {repeatType === 'Monthly' && <MonthlyTab />}
+            {repeatType === 'Yearly' && <YearlyTab />}
+            {repeatType === 'Interval' && <IntervalTab />}
           </div>
-        </div>
+
+          {repeatType !== 'Interval' && (
+            <div className="border-t border-gray-200 pt-4">
+              <div className="grid grid-cols-2 gap-3">
+                <FormulaTextField label="Time of Day" placeholder="09:00 AM" />
+                <FormulaDropdown label="Timezone" options={timezones} placeholder="Select timezone..." />
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   )
 }
 
-function RepeatTimerSection() {
-  const [enabled, setEnabled] = useState(true)
-
-  return (
-    <div className="space-y-6">
-      <CheckboxField
-        choiceLabels={['Repeat Timer Event']}
-        choiceValues={[true]}
-        value={enabled ? [true] : []}
-        onChange={(val) => setEnabled(val.length > 0)}
-        labelPosition="COLLAPSED"
-        marginBelow="NONE"
-      />
-      {enabled && <div className="ml-6"><RecurrenceContent /></div>}
-    </div>
-  )
-}
-
-export function TimerRecurrenceMockupsV2() {
+export function TimerRecurrenceMockupsV3() {
   return (
     <div>
-      <HeadingField text="Option B" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="STANDARD" />
+      <HeadingField text="Option C" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="STANDARD" />
       <div className="grid grid-cols-2 gap-6 items-start">
         <CardLayout padding="NONE" showShadow={false} shape="SQUARED">
           <div className="px-6 py-4 border-b border-gray-200">

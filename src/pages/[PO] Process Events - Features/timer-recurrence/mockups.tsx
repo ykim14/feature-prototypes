@@ -317,6 +317,7 @@ function RepeatTimerSection() {
 }
 
 import { TimerRecurrenceMockupsV2 } from './mockups-v2'
+import { TimerRecurrenceMockupsV3 } from './mockups-v3'
 
 export default function TimerRecurrenceMockups() {
   return (
@@ -335,34 +336,39 @@ export default function TimerRecurrenceMockups() {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-6 items-start">
+      <div className="space-y-10">
         {/* V1 */}
-        <div className="space-y-4">
-          <HeadingField text="Option A" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="NONE" />
-          <CardLayout padding="NONE" showShadow={false} shape="SQUARED">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <HeadingField text="Timer Event" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="NONE" />
+        <div>
+          <HeadingField text="Option A" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="STANDARD" />
+          <div className="grid grid-cols-2 gap-6 items-start">
+            <CardLayout padding="NONE" showShadow={false} shape="SQUARED">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <HeadingField text="Timer Event" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="NONE" />
+              </div>
+              <div className="p-6 overflow-y-auto" style={{ height: '350px' }}>
+                <RepeatTimerSection />
+              </div>
+              <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                <ButtonWidget label="CANCEL" style="OUTLINE" color="ACCENT" size="SMALL" className="rounded-none" />
+                <ButtonWidget label="OK" style="SOLID" color="ACCENT" size="SMALL" className="rounded-none" />
+              </div>
+            </CardLayout>
+            <div className="text-sm text-gray-500 space-y-2">
+              <p className="font-semibold text-gray-700">Design Notes</p>
+              <ul className="list-disc ml-5 space-y-1">
+                <li>Dropdown for recurrence type selection.</li>
+                <li>Inline radio buttons with input fields for OR logic.</li>
+                <li>Disabled state on unselected radio option fields.</li>
+              </ul>
             </div>
-            <div className="p-6 overflow-y-auto" style={{ height: '350px' }}>
-              <RepeatTimerSection />
-            </div>
-            <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-              <ButtonWidget label="CANCEL" style="OUTLINE" color="ACCENT" size="SMALL" className="rounded-none" />
-              <ButtonWidget label="OK" style="SOLID" color="ACCENT" size="SMALL" className="rounded-none" />
-            </div>
-          </CardLayout>
-          <div className="text-sm text-gray-500 space-y-2">
-            <p className="font-semibold text-gray-700">Design Notes</p>
-            <ul className="list-disc ml-5 space-y-1">
-              <li>Dropdown for recurrence type selection.</li>
-              <li>Inline radio buttons with input fields for OR logic.</li>
-              <li>Disabled state on unselected radio option fields.</li>
-            </ul>
           </div>
         </div>
 
         {/* V2 */}
         <TimerRecurrenceMockupsV2 />
+
+        {/* V3 */}
+        <TimerRecurrenceMockupsV3 />
       </div>
     </div>
   )
