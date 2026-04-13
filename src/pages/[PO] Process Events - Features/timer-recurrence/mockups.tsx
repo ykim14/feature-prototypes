@@ -7,6 +7,7 @@ import {
   TextField,
   DropdownField,
   CardLayout,
+  CollapsibleSection,
 } from '@pglevy/sailwind'
 
 type RecurrenceType = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly' | 'Interval'
@@ -319,10 +320,9 @@ export default function TimerRecurrenceMockups() {
         />
       </div>
 
-      <div className="space-y-10">
+      <div className="space-y-4">
         {/* V1 */}
-        <div>
-          <HeadingField text="Option A" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="STANDARD" />
+        <CollapsibleSection title="Option A" defaultOpen={true}>
           <div className="grid grid-cols-2 gap-6 items-start">
             <CardLayout padding="NONE" showShadow={false} shape="SQUARED">
               <div className="px-6 py-4 border-b border-gray-200">
@@ -347,7 +347,7 @@ export default function TimerRecurrenceMockups() {
               </ul>
             </div>
           </div>
-        </div>
+        </CollapsibleSection>
 
         {/* V2 */}
         <TimerRecurrenceMockupsV2 />

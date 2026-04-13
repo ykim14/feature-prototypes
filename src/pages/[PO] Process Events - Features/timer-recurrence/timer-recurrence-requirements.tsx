@@ -18,29 +18,6 @@ export default function TimerRecurrenceFeatureCard() {
       </div>
 
       <div className="grid grid-cols-2 gap-6 items-start">
-        {/* Requirements */}
-        <div>
-          <HeadingField text="Requirements" size="MEDIUM_PLUS" fontWeight="SEMI_BOLD" marginBelow="STANDARD" />
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-5 text-base text-gray-800 leading-relaxed">
-            <div>
-              <p className="font-semibold mb-1">1. Dynamic Inputs</p>
-              <p>Every numeric or time-based field must support a "formula" (logic/expression) rather than just a fixed integer.</p>
-            </div>
-            <div>
-              <p className="font-semibold mb-1">2. Recurrence Types</p>
-              <p>Five distinct modes (Daily, Weekly, Monthly, Yearly, Interval) with specific sub-logic for each (e.g., "nth day of week" vs. "specific date").</p>
-            </div>
-            <div>
-              <p className="font-semibold mb-1">3. Universal Overrides</p>
-              <p>Regardless of the frequency, users can optionally specify the Time of Day and Timezone using formulas.</p>
-            </div>
-            <div>
-              <p className="font-semibold mb-1">4. UX Pattern: OR Logic</p>
-              <p>The interface needs to handle "OR" logic (e.g., "every X days" vs. "every weekday") cleanly.</p>
-            </div>
-          </div>
-        </div>
-
         {/* Current Behavior */}
         <div>
           <HeadingField text="Current Behavior" size="MEDIUM_PLUS" fontWeight="SEMI_BOLD" marginBelow="STANDARD" />
@@ -61,6 +38,29 @@ export default function TimerRecurrenceFeatureCard() {
                 />
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Requirements */}
+        <div>
+          <HeadingField text="Requirements" size="MEDIUM_PLUS" fontWeight="SEMI_BOLD" marginBelow="STANDARD" />
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-5 text-base text-gray-800 leading-relaxed">
+            <div>
+              <p className="font-semibold mb-1">1. Dynamic Inputs</p>
+              <p>Every numeric or time-based field must support a "formula" (logic/expression) rather than just a fixed integer.</p>
+            </div>
+            <div>
+              <p className="font-semibold mb-1">2. Recurrence Types</p>
+              <p>Five distinct modes (Daily, Weekly, Monthly, Yearly, Interval) with specific sub-logic for each (e.g., "nth day of week" vs. "specific date").</p>
+            </div>
+            <div>
+              <p className="font-semibold mb-1">3. Universal Overrides</p>
+              <p>Regardless of the frequency, users can optionally specify the Time of Day and Timezone using formulas.</p>
+            </div>
+            <div>
+              <p className="font-semibold mb-1">4. UX Pattern: OR Logic</p>
+              <p>The interface needs to handle "OR" logic (e.g., "every X days" vs. "every weekday") cleanly.</p>
+            </div>
           </div>
         </div>
       </div>

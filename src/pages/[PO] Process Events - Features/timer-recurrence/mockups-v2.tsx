@@ -238,7 +238,7 @@ function RepeatTimerSection() {
   return (
     <div className="space-y-6">
       <CheckboxField
-        choiceLabels={['Repeat Timer Event']}
+        choiceLabels={['Repeat node']}
         choiceValues={[true]}
         value={enabled ? [true] : []}
         onChange={(val) => setEnabled(val.length > 0)}
