@@ -184,7 +184,7 @@ function IntervalTab() {
   return (
     <div className="flex items-center gap-2">
       <span className="text-sm text-gray-900">Repeat every</span>
-      <div className="w-20"><FormulaTextField placeholder="30" /></div>
+      <div className="w-24"><FormulaTextField placeholder="30" /></div>
       <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
         <DropdownField
           choiceLabels={units}
