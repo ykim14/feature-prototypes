@@ -256,7 +256,7 @@ const timezones = [
 
 function RecurrenceSettings() {
   const [type, setType] = useState('Never')
-  const types = ['Never', 'Daily', 'Weekly', 'Monthly', 'Yearly', 'Custom interval']
+  const types = ['Never', 'Daily', 'Weekly', 'Monthly', 'Yearly', 'Interval']
 
   return (
     <div className="space-y-4">
@@ -278,11 +278,11 @@ function RecurrenceSettings() {
           {type === 'Weekly' && <WeeklySettings />}
           {type === 'Monthly' && <MonthlySettings />}
           {type === 'Yearly' && <YearlySettings />}
-          {type === 'Custom interval' && <IntervalSettings />}
+          {type === 'Interval' && <IntervalSettings />}
         </div>
       )}
 
-      {type !== 'Never' && type !== 'Custom interval' && (
+      {type !== 'Never' && type !== 'Interval' && (
         <div className="border-t border-gray-200 pt-4">
           <div className="grid grid-cols-2 gap-3">
             <FormulaTextField label="Time of Day" placeholder="09:00 AM" />

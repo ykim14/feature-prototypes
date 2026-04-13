@@ -5,7 +5,6 @@ import {
   TextField,
   DropdownField,
   CheckboxField,
-  SwitchField,
   RadioButtonField,
   CardLayout,
 } from '@pglevy/sailwind'
@@ -64,155 +63,6 @@ function FormulaDropdown({ label, options, placeholder, disabled }: { label?: st
   )
 }
 
-function DailyTab() {
-  const [weekdaysOnly, setWeekdaysOnly] = useState(false)
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-3">
-        <div className="[&>div]:mb-0 [&>div]:leading-none">
-          <SwitchField
-            value={weekdaysOnly}
-            onChange={setWeekdaysOnly}
-            labelPosition="COLLAPSED"
-            marginBelow="NONE"
-            size="SMALL"
-          />
-        </div>
-        <span className="text-base text-gray-900">Only weekdays</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <span className="text-base text-gray-900">Repeat every</span>
-        <div className="w-20"><FormulaTextField placeholder="1" disabled={weekdaysOnly} /></div>
-        <span className="text-base text-gray-900">day(s)</span>
-      </div>
-    </div>
-  )
-}
-
-function WeeklyTab() {
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-  const [selectedDays, setSelectedDays] = useState<string[]>([])
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <span className="text-base text-gray-900">Repeat every</span>
-        <div className="w-20"><FormulaTextField placeholder="1" /></div>
-        <span className="text-base text-gray-900">week(s) on</span>
-      </div>
-      <CheckboxField
-        choiceLabels={days}
-        choiceValues={days}
-        value={selectedDays}
-        onChange={setSelectedDays}
-        choiceLayout="COMPACT"
-        labelPosition="COLLAPSED"
-        marginBelow="NONE"
-      />
-    </div>
-  )
-}
-
-function MonthlyTab() {
-  const [useNth, setUseNth] = useState(false)
-  const ordinals = ['First', 'Second', 'Third', 'Fourth', 'Last']
-  const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-3">
-        <div className="[&>div]:mb-0 [&>div]:leading-none">
-          <SwitchField
-            value={useNth}
-            onChange={setUseNth}
-            labelPosition="COLLAPSED"
-            marginBelow="NONE"
-            size="SMALL"
-          />
-        </div>
-        <span className="text-base text-gray-900">Use nth weekday pattern</span>
-      </div>
-      {!useNth ? (
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <span className="text-base text-gray-900">Day</span>
-            <div className="w-20"><FormulaTextField placeholder="1" /></div>
-            <span className="text-base text-gray-900">of every</span>
-            <div className="w-20"><FormulaTextField placeholder="1" /></div>
-            <span className="text-base text-gray-900">month(s)</span>
-          </div>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          <div className="grid grid-cols-2 gap-3">
-            <FormulaDropdown label="Occurrence" options={ordinals} placeholder="Select..." />
-            <FormulaDropdown label="Day of week" options={weekdays} placeholder="Select..." />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-base text-gray-900">Every</span>
-            <div className="w-20"><FormulaTextField placeholder="1" /></div>
-            <span className="text-base text-gray-900">month(s)</span>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
-function YearlyTab() {
-  const [useNth, setUseNth] = useState(false)
-  const months = ['January','February','March','April','May','June','July','August','September','October','November','December']
-  const ordinals = ['First', 'Second', 'Third', 'Fourth', 'Last']
-  const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-3">
-        <div className="[&>div]:mb-0 [&>div]:leading-none">
-          <SwitchField
-            value={useNth}
-            onChange={setUseNth}
-            labelPosition="COLLAPSED"
-            marginBelow="NONE"
-            size="SMALL"
-          />
-        </div>
-        <span className="text-base text-gray-900">Use nth weekday pattern</span>
-      </div>
-      {!useNth ? (
-        <div className="grid grid-cols-2 gap-3">
-          <FormulaDropdown label="Month" options={months} placeholder="Select..." />
-          <FormulaTextField label="Day" placeholder="1" />
-        </div>
-      ) : (
-        <div className="space-y-3">
-          <div className="grid grid-cols-3 gap-3">
-            <FormulaDropdown label="Occurrence" options={ordinals} placeholder="Select..." />
-            <FormulaDropdown label="Day of week" options={weekdays} placeholder="Select..." />
-            <FormulaDropdown label="Month" options={months} placeholder="Select..." />
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
-function IntervalTab() {
-  const units = ['Minutes', 'Hours']
-  return (
-    <div className="flex items-center gap-2">
-      <span className="text-base text-gray-900">Repeat every</span>
-      <div className="w-24"><FormulaTextField placeholder="30" /></div>
-      <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
-        <DropdownField
-          choiceLabels={units}
-          choiceValues={units}
-          value="Minutes"
-          labelPosition="COLLAPSED"
-          marginBelow="NONE"
-        />
-      </div>
-    </div>
-  )
-}
-
 const timezones = [
   'America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles',
   'America/Anchorage', 'Pacific/Honolulu', 'Europe/London', 'Europe/Paris',
@@ -221,7 +71,12 @@ const timezones = [
 
 function RecurrenceContent() {
   const [activeType, setActiveType] = useState('Daily')
+  const [dailyUnit, setDailyUnit] = useState('days')
+  const [selectedDays, setSelectedDays] = useState<string[]>([])
+  const [useNthMonthly, setUseNthMonthly] = useState(false)
+  const [useNthYearly, setUseNthYearly] = useState(false)
   const types = ['Daily', 'Weekly', 'Monthly', 'Yearly', 'Interval']
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December']
 
   return (
     <div className="space-y-6">
@@ -236,13 +91,134 @@ function RecurrenceContent() {
         marginBelow="STANDARD"
       />
 
-      <div>
-        {activeType === 'Daily' && <DailyTab />}
-        {activeType === 'Weekly' && <WeeklyTab />}
-        {activeType === 'Monthly' && <MonthlyTab />}
-        {activeType === 'Yearly' && <YearlyTab />}
-        {activeType === 'Interval' && <IntervalTab />}
-      </div>
+      {activeType === 'Daily' && (
+        <div className="flex items-center gap-2">
+          <span className="text-base text-gray-900">Every</span>
+          {dailyUnit === 'days' && <div className="w-24"><FormulaTextField placeholder="1" /></div>}
+          <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
+            <DropdownField
+              choiceLabels={['Day(s)', 'Weekday']}
+              choiceValues={['days', 'weekdays']}
+              value={dailyUnit}
+              onChange={(v) => { if (v) setDailyUnit(v) }}
+              labelPosition="COLLAPSED"
+              marginBelow="NONE"
+            />
+          </div>
+        </div>
+      )}
+
+      {activeType === 'Weekly' && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <span className="text-base text-gray-900">Every</span>
+            <div className="w-24"><FormulaTextField placeholder="1" /></div>
+            <span className="text-base text-gray-900">week(s) on</span>
+          </div>
+          <div className="flex gap-1.5">
+            {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((d) => (
+              <button
+                key={d}
+                onClick={() => setSelectedDays((prev) => prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d])}
+                className={`px-2.5 py-1 text-xs rounded border font-medium ${selectedDays.includes(d) ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'}`}
+              >
+                {d}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {activeType === 'Monthly' && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-base text-gray-900">Every</span>
+            <div className="w-24"><FormulaTextField placeholder="1" /></div>
+            <span className="text-base text-gray-900">month(s) on</span>
+            <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+              <DropdownField
+                choiceLabels={['Day of month', 'Day of week']}
+                choiceValues={['day_of_month', 'day_of_week']}
+                value={useNthMonthly ? 'day_of_week' : 'day_of_month'}
+                onChange={(v) => setUseNthMonthly(v === 'day_of_week')}
+                labelPosition="COLLAPSED"
+                marginBelow="NONE"
+              />
+            </div>
+            {!useNthMonthly ? (
+              <div className="w-24"><FormulaTextField placeholder="1" /></div>
+            ) : (
+              <>
+                <span className="text-base text-gray-900">the</span>
+                <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+                  <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value="First" labelPosition="COLLAPSED" marginBelow="NONE" />
+                </div>
+                <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
+                  <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value="Monday" labelPosition="COLLAPSED" marginBelow="NONE" />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {activeType === 'Yearly' && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-base text-gray-900">Every</span>
+            <div className="w-24"><FormulaTextField placeholder="1" /></div>
+            <span className="text-base text-gray-900">year(s) on</span>
+            <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+              <DropdownField
+                choiceLabels={['Day of month', 'Day of week']}
+                choiceValues={['day_of_month', 'day_of_week']}
+                value={useNthYearly ? 'day_of_week' : 'day_of_month'}
+                onChange={(v) => setUseNthYearly(v === 'day_of_week')}
+                labelPosition="COLLAPSED"
+                marginBelow="NONE"
+              />
+            </div>
+            {!useNthYearly ? (
+              <>
+                <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+                  <DropdownField choiceLabels={months} choiceValues={months} value="January" labelPosition="COLLAPSED" marginBelow="NONE" />
+                </div>
+                <div className="w-24"><FormulaTextField placeholder="1" /></div>
+              </>
+            ) : (
+              <>
+                <span className="text-base text-gray-900">the</span>
+                <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+                  <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value="First" labelPosition="COLLAPSED" marginBelow="NONE" />
+                </div>
+                <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
+                  <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value="Monday" labelPosition="COLLAPSED" marginBelow="NONE" />
+                </div>
+                <span className="text-base text-gray-900">of</span>
+                <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+                  <DropdownField choiceLabels={months} choiceValues={months} value="January" labelPosition="COLLAPSED" marginBelow="NONE" />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {activeType === 'Interval' && (
+        <div className="flex items-center gap-2">
+          <span className="text-base text-gray-900">Every</span>
+          <div className="w-24"><FormulaTextField placeholder="30" /></div>
+          <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+            <DropdownField
+              choiceLabels={['Minutes', 'Hours']}
+              choiceValues={['Minutes', 'Hours']}
+              value="Minutes"
+              labelPosition="COLLAPSED"
+              marginBelow="NONE"
+            />
+          </div>
+        </div>
+      )}
 
       {activeType !== 'Interval' && (
         <div className="border-t border-gray-200 pt-4">
