@@ -6,7 +6,6 @@ import {
   ButtonWidget,
   TextField,
   DropdownField,
-  CheckboxField,
   CardLayout,
 } from '@pglevy/sailwind'
 
@@ -104,7 +103,7 @@ function DailySettings() {
 }
 
 function WeeklySettings() {
-  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
   const [selected, setSelected] = useState<string[]>([])
 
   const toggle = (d: string) => setSelected((prev) => prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d])
@@ -112,7 +111,7 @@ function WeeklySettings() {
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2">
-        <span className="text-base text-gray-900">Recur every</span>
+        <span className="text-base text-gray-900">Every</span>
         <div className="w-24"><FormulaTextField placeholder="1" /></div>
         <span className="text-base text-gray-900">week(s) on:</span>
       </div>
@@ -159,7 +158,7 @@ function MonthlySettings() {
         <input type="radio" name="monthly-mode" checked={mode === 'day_of_month'} onChange={() => switchMode('day_of_month')} className="h-4 w-4 shrink-0 cursor-pointer" />
         <span className="text-base text-gray-900">Day</span>
         <div className="w-24"><FormulaTextField placeholder="1" disabled={mode !== 'day_of_month'} value={dayOfMonth} onChange={setDayOfMonth} /></div>
-        <span className="text-base text-gray-900">of every</span>
+        <span className="text-base text-gray-900">every</span>
         <div className="w-24"><FormulaTextField placeholder="1" disabled={mode !== 'day_of_month'} value={everyNMonths1} onChange={setEveryNMonths1} /></div>
         <span className="text-base text-gray-900">month(s)</span>
       </div>
@@ -172,7 +171,7 @@ function MonthlySettings() {
         <div className={`w-32 [&_svg.hover\\:text-gray-700]:hidden ${mode !== 'nth_weekday' ? '[&_button]:bg-gray-50' : ''}`}>
           <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value={nthWeekday} onChange={setNthWeekday} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
         </div>
-        <span className="text-base text-gray-900">of every</span>
+        <span className="text-base text-gray-900">every</span>
         <div className="w-24"><FormulaTextField placeholder="1" disabled={mode !== 'nth_weekday'} value={everyNMonths2} onChange={setEveryNMonths2} /></div>
         <span className="text-base text-gray-900">month(s)</span>
       </div>
@@ -256,33 +255,34 @@ const timezones = [
 ]
 
 function RecurrenceSettings() {
-  const [type, setType] = useState('Daily')
-  const types = ['Daily', 'Weekly', 'Monthly', 'Yearly', 'Interval']
+  const [type, setType] = useState('Never')
+  const types = ['Never', 'Daily', 'Weekly', 'Monthly', 'Yearly', 'Custom interval']
 
   return (
     <div className="space-y-4">
-      <div className="w-1/3 [&_svg.hover\:text-gray-700]:hidden">
+      <div className="w-48 [&_svg.hover\:text-gray-700]:hidden">
         <DropdownField
+          label="Repeat"
           choiceLabels={types}
           choiceValues={types}
           value={type}
           onChange={(v) => { if (v) setType(v) }}
-          placeholder="Daily"
-          required={true}
-          labelPosition="COLLAPSED"
+          labelPosition="ABOVE"
           marginBelow="NONE"
         />
       </div>
 
-      <div>
-        {type === 'Daily' && <DailySettings />}
-        {type === 'Weekly' && <WeeklySettings />}
-        {type === 'Monthly' && <MonthlySettings />}
-        {type === 'Yearly' && <YearlySettings />}
-        {type === 'Interval' && <IntervalSettings />}
-      </div>
+      {type !== 'Never' && (
+        <div>
+          {type === 'Daily' && <DailySettings />}
+          {type === 'Weekly' && <WeeklySettings />}
+          {type === 'Monthly' && <MonthlySettings />}
+          {type === 'Yearly' && <YearlySettings />}
+          {type === 'Custom interval' && <IntervalSettings />}
+        </div>
+      )}
 
-      {type !== 'Interval' && (
+      {type !== 'Never' && type !== 'Custom interval' && (
         <div className="border-t border-gray-200 pt-4">
           <div className="grid grid-cols-2 gap-3">
             <FormulaTextField label="Time of Day" placeholder="09:00 AM" />
@@ -295,25 +295,7 @@ function RecurrenceSettings() {
 }
 
 function RepeatTimerSection() {
-  const [enabled, setEnabled] = useState(true)
-
-  return (
-    <div className="space-y-3">
-      <CheckboxField
-        choiceLabels={['Repeat Timer Event']}
-        choiceValues={[true]}
-        value={enabled ? [true] : []}
-        onChange={(val) => setEnabled(val.length > 0)}
-        labelPosition="COLLAPSED"
-        marginBelow="NONE"
-      />
-      {enabled && (
-        <div className="ml-6 mt-2">
-          <RecurrenceSettings />
-        </div>
-      )}
-    </div>
-  )
+  return <RecurrenceSettings />
 }
 
 import { TimerRecurrenceMockupsV2 } from './mockups-v2'
