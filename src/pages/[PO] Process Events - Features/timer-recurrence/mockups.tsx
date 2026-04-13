@@ -92,7 +92,7 @@ function DailySettings() {
       <div className="flex items-center gap-2">
         <input type="radio" name="daily-mode" checked={mode === 'every_n_days'} onChange={() => switchMode('every_n_days')} className="h-4 w-4 shrink-0 cursor-pointer" />
         <span className="text-base text-gray-900">Every</span>
-        <div className="w-20"><FormulaTextField placeholder="1" disabled={mode !== 'every_n_days'} value={dayCount} onChange={setDayCount} /></div>
+        <div className="w-24"><FormulaTextField placeholder="1" disabled={mode !== 'every_n_days'} value={dayCount} onChange={setDayCount} /></div>
         <span className="text-base text-gray-900">day(s)</span>
       </div>
       <div className="flex items-center gap-2">
@@ -113,7 +113,7 @@ function WeeklySettings() {
     <div className="space-y-3">
       <div className="flex items-center gap-2">
         <span className="text-base text-gray-900">Recur every</span>
-        <div className="w-20"><FormulaTextField placeholder="1" /></div>
+        <div className="w-24"><FormulaTextField placeholder="1" /></div>
         <span className="text-base text-gray-900">week(s) on:</span>
       </div>
       <div className="flex gap-1.5">
@@ -158,9 +158,9 @@ function MonthlySettings() {
       <div className="flex items-center gap-2">
         <input type="radio" name="monthly-mode" checked={mode === 'day_of_month'} onChange={() => switchMode('day_of_month')} className="h-4 w-4 shrink-0 cursor-pointer" />
         <span className="text-base text-gray-900">Day</span>
-        <div className="w-20"><FormulaTextField placeholder="1" disabled={mode !== 'day_of_month'} value={dayOfMonth} onChange={setDayOfMonth} /></div>
+        <div className="w-24"><FormulaTextField placeholder="1" disabled={mode !== 'day_of_month'} value={dayOfMonth} onChange={setDayOfMonth} /></div>
         <span className="text-base text-gray-900">of every</span>
-        <div className="w-20"><FormulaTextField placeholder="1" disabled={mode !== 'day_of_month'} value={everyNMonths1} onChange={setEveryNMonths1} /></div>
+        <div className="w-24"><FormulaTextField placeholder="1" disabled={mode !== 'day_of_month'} value={everyNMonths1} onChange={setEveryNMonths1} /></div>
         <span className="text-base text-gray-900">month(s)</span>
       </div>
       <div className="flex items-center gap-2 flex-wrap">
@@ -173,7 +173,7 @@ function MonthlySettings() {
           <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value={nthWeekday} onChange={setNthWeekday} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
         </div>
         <span className="text-base text-gray-900">of every</span>
-        <div className="w-20"><FormulaTextField placeholder="1" disabled={mode !== 'nth_weekday'} value={everyNMonths2} onChange={setEveryNMonths2} /></div>
+        <div className="w-24"><FormulaTextField placeholder="1" disabled={mode !== 'nth_weekday'} value={everyNMonths2} onChange={setEveryNMonths2} /></div>
         <span className="text-base text-gray-900">month(s)</span>
       </div>
     </div>
@@ -211,7 +211,7 @@ function YearlySettings() {
         <div className={`w-36 [&_svg.hover\\:text-gray-700]:hidden ${mode !== 'specific_date' ? '[&_button]:bg-gray-50' : ''}`}>
           <DropdownField choiceLabels={months} choiceValues={months} value={specificMonth} onChange={setSpecificMonth} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'specific_date'} />
         </div>
-        <div className="w-20"><FormulaTextField placeholder="1" value={specificDay} onChange={setSpecificDay} disabled={mode !== 'specific_date'} /></div>
+        <div className="w-24"><FormulaTextField placeholder="1" value={specificDay} onChange={setSpecificDay} disabled={mode !== 'specific_date'} /></div>
       </div>
       <div className="flex items-center gap-2 flex-wrap">
         <input type="radio" name="yearly-mode" checked={mode === 'nth_weekday'} onChange={() => switchMode('nth_weekday')} className="h-4 w-4 shrink-0 cursor-pointer" />
