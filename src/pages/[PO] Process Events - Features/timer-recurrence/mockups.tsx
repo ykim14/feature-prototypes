@@ -7,7 +7,6 @@ import {
   TextField,
   DropdownField,
   CardLayout,
-  CollapsibleSection,
 } from '@pglevy/sailwind'
 
 type RecurrenceType = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly' | 'Interval'
@@ -299,7 +298,22 @@ function RepeatTimerSection() {
   return <RecurrenceSettings />
 }
 
+import { ChevronDown, ChevronRight } from 'lucide-react'
+
 import { TimerRecurrenceMockupsV2 } from './mockups-v2'
+
+function Section({ title, defaultOpen = true, children }: { title: string; defaultOpen?: boolean; children: React.ReactNode }) {
+  const [open, setOpen] = useState(defaultOpen)
+  return (
+    <div>
+      <button onClick={() => setOpen(!open)} className="flex items-center gap-2 py-2 text-xl font-semibold text-gray-900 hover:text-blue-500 transition-colors">
+        {open ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+        {title}
+      </button>
+      {open && <div className="mt-4">{children}</div>}
+    </div>
+  )
+}
 import { TimerRecurrenceMockupsV3 } from './mockups-v3'
 import { TimerRecurrenceMockupsV4 } from './mockups-v4'
 
@@ -320,9 +334,9 @@ export default function TimerRecurrenceMockups() {
         />
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         {/* V1 */}
-        <CollapsibleSection title="Option A" defaultOpen={true}>
+        <Section title="Option A" defaultOpen={true}>
           <div className="grid grid-cols-2 gap-6 items-start">
             <CardLayout padding="NONE" showShadow={false} shape="SQUARED">
               <div className="px-6 py-4 border-b border-gray-200">
@@ -347,16 +361,22 @@ export default function TimerRecurrenceMockups() {
               </ul>
             </div>
           </div>
-        </CollapsibleSection>
+        </Section>
 
         {/* V2 */}
-        <TimerRecurrenceMockupsV2 />
+        <Section title="Option B">
+          <TimerRecurrenceMockupsV2 />
+        </Section>
 
         {/* V3 */}
-        <TimerRecurrenceMockupsV3 />
+        <Section title="Option C">
+          <TimerRecurrenceMockupsV3 />
+        </Section>
 
         {/* V4 */}
-        <TimerRecurrenceMockupsV4 />
+        <Section title="Option D">
+          <TimerRecurrenceMockupsV4 />
+        </Section>
       </div>
     </div>
   )

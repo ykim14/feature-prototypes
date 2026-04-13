@@ -342,7 +342,6 @@ function RepeatTimerSection() {
 export function TimerRecurrenceMockupsV3() {
   return (
     <div>
-      <HeadingField text="Option C" size="MEDIUM" fontWeight="SEMI_BOLD" marginBelow="STANDARD" />
       <div className="grid grid-cols-2 gap-6 items-start">
         <CardLayout padding="NONE" showShadow={false} shape="SQUARED">
           <div className="px-6 py-4 border-b border-gray-200">
