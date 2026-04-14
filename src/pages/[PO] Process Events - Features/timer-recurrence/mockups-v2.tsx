@@ -64,7 +64,7 @@ function FormulaDropdown({ label, options, placeholder, disabled, defaultValue }
 }
 
 const timezones = [
-  "Default (initiator's timezone)",
+  "Default (process' timezone)",
   'America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles',
   'America/Anchorage', 'Pacific/Honolulu', 'Europe/London', 'Europe/Paris',
   'Europe/Berlin', 'Asia/Tokyo', 'Asia/Shanghai', 'Asia/Kolkata', 'Australia/Sydney', 'UTC',
@@ -225,7 +225,7 @@ function RecurrenceContent() {
         <div className="border-t border-gray-200 pt-4">
           <div className="grid grid-cols-2 gap-3">
             <FormulaTextField label="Time of Day" placeholder="09:00 AM" />
-            <FormulaDropdown label="Timezone" options={timezones} defaultValue="Default (initiator's timezone)" />
+            <FormulaDropdown label="Timezone" options={timezones} defaultValue="Default (process' timezone)" />
           </div>
         </div>
       )}
