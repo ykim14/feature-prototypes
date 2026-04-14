@@ -41,10 +41,10 @@ function FormulaTextField({ label, placeholder, disabled }: { label?: string; pl
   )
 }
 
-function FormulaDropdown({ label, options, placeholder, disabled }: { label?: string; options: string[]; placeholder?: string; disabled?: boolean }) {
-  const [val, setVal] = useState<string | undefined>(undefined)
+function FormulaDropdown({ label, options, placeholder, disabled, defaultValue }: { label?: string; options: string[]; placeholder?: string; disabled?: boolean; defaultValue?: string }) {
+  const [val, setVal] = useState<string | undefined>(defaultValue)
   return (
-    <div className={`flex gap-0.5 ${label ? 'items-end' : 'items-center'} ${disabled ? '[&_button]:bg-gray-50' : ''}`}>
+    <div className={`flex gap-0.5 hide-dropdown-clear ${label ? 'items-end' : 'items-center'} ${disabled ? '[&_button]:bg-gray-50' : ''}`}>
       <div className="flex-1">
         <DropdownField
           label={label}
@@ -184,7 +184,7 @@ function IntervalTab() {
     <div className="flex items-center gap-2">
       <span className="text-base text-gray-900">Repeat every</span>
       <div className="w-24"><FormulaTextField placeholder="30" /></div>
-      <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+      <div className="w-28 hide-dropdown-clear">
         <DropdownField
           choiceLabels={units}
           choiceValues={units}
@@ -198,6 +198,7 @@ function IntervalTab() {
 }
 
 const timezones = [
+  "Default (initiator's timezone)",
   'America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles',
   'America/Anchorage', 'Pacific/Honolulu', 'Europe/London', 'Europe/Paris',
   'Europe/Berlin', 'Asia/Tokyo', 'Asia/Shanghai', 'Asia/Kolkata', 'Australia/Sydney', 'UTC',
@@ -215,7 +216,7 @@ function RepeatTimerSection() {
     <div className="space-y-6">
       <div className="flex items-center gap-2">
         <span className="text-base text-gray-900">Repeat</span>
-        <div className="w-48 [&_svg.hover\:text-gray-700]:hidden">
+        <div className="w-48 hide-dropdown-clear">
           <DropdownField
             choiceLabels={types}
             choiceValues={types}
@@ -236,7 +237,7 @@ function RepeatTimerSection() {
         {repeatType === 'Monthly' && <span className="text-base text-gray-900">month(s) on</span>}
         {repeatType === 'Yearly' && <span className="text-base text-gray-900">year(s) on</span>}
         {repeatType === 'Time interval' && (
-          <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+          <div className="w-28 hide-dropdown-clear">
             <DropdownField
               choiceLabels={['Minutes', 'Hours']}
               choiceValues={['Minutes', 'Hours']}
@@ -264,7 +265,7 @@ function RepeatTimerSection() {
 
       {repeatType === 'Monthly' && (
         <div className="flex items-center gap-2 flex-wrap">
-          <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+          <div className="w-36 hide-dropdown-clear">
             <DropdownField
               choiceLabels={['Day of month', 'Day of week']}
               choiceValues={['day_of_month', 'day_of_week']}
@@ -279,10 +280,10 @@ function RepeatTimerSection() {
           ) : (
             <>
               <span className="text-base text-gray-900">the</span>
-              <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+              <div className="w-28 hide-dropdown-clear">
                 <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value="First" labelPosition="COLLAPSED" marginBelow="NONE" />
               </div>
-              <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
+              <div className="w-32 hide-dropdown-clear">
                 <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value="Monday" labelPosition="COLLAPSED" marginBelow="NONE" />
               </div>
             </>
@@ -292,7 +293,7 @@ function RepeatTimerSection() {
 
       {repeatType === 'Yearly' && (
         <div className="flex items-center gap-2 flex-wrap">
-          <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+          <div className="w-36 hide-dropdown-clear">
             <DropdownField
               choiceLabels={['Day of month', 'Day of week']}
               choiceValues={['day_of_month', 'day_of_week']}
@@ -304,7 +305,7 @@ function RepeatTimerSection() {
           </div>
           {!useNthYearly ? (
             <>
-              <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+              <div className="w-36 hide-dropdown-clear">
                 <DropdownField choiceLabels={months} choiceValues={months} value="January" labelPosition="COLLAPSED" marginBelow="NONE" />
               </div>
               <div className="w-24"><FormulaTextField placeholder="1" /></div>
@@ -312,14 +313,14 @@ function RepeatTimerSection() {
           ) : (
             <>
               <span className="text-base text-gray-900">the</span>
-              <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+              <div className="w-28 hide-dropdown-clear">
                 <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value="First" labelPosition="COLLAPSED" marginBelow="NONE" />
               </div>
-              <div className="w-32 [&_svg.hover\:text-gray-700]:hidden">
+              <div className="w-32 hide-dropdown-clear">
                 <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value="Monday" labelPosition="COLLAPSED" marginBelow="NONE" />
               </div>
               <span className="text-base text-gray-900">of</span>
-              <div className="w-36 [&_svg.hover\:text-gray-700]:hidden">
+              <div className="w-36 hide-dropdown-clear">
                 <DropdownField choiceLabels={months} choiceValues={months} value="January" labelPosition="COLLAPSED" marginBelow="NONE" />
               </div>
             </>
@@ -331,7 +332,7 @@ function RepeatTimerSection() {
         <div className="border-t border-gray-200 pt-4">
           <div className="grid grid-cols-2 gap-3">
             <FormulaTextField label="Time of Day" placeholder="09:00 AM" />
-            <FormulaDropdown label="Timezone" options={timezones} placeholder="Select timezone..." />
+            <FormulaDropdown label="Timezone" options={timezones} defaultValue="Default (initiator's timezone)" />
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import {
   HeadingField,
   RichTextDisplayField,
@@ -8,6 +8,10 @@ import {
   DropdownField,
   CardLayout,
 } from '@pglevy/sailwind'
+import { ChevronDown, ChevronRight } from 'lucide-react'
+import { TimerRecurrenceMockupsV2 } from './mockups-v2'
+import { TimerRecurrenceMockupsV3 } from './mockups-v3'
+import { TimerRecurrenceMockupsV4 } from './mockups-v4'
 
 type RecurrenceType = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly' | 'Interval'
 
@@ -52,10 +56,10 @@ function FormulaTextField({ label, placeholder, disabled, value, onChange }: { l
   )
 }
 
-function FormulaDropdown({ label, options, placeholder }: { label?: string; options: string[]; placeholder?: string }) {
-  const [val, setVal] = useState<string | undefined>(undefined)
+function FormulaDropdown({ label, options, placeholder, defaultValue }: { label?: string; options: string[]; placeholder?: string; defaultValue?: string }) {
+  const [val, setVal] = useState<string | undefined>(defaultValue)
   return (
-    <div className={`flex gap-0.5 ${label ? 'items-end' : 'items-center'}`}>
+    <div className={`flex gap-0.5 hide-dropdown-clear ${label ? 'items-end' : 'items-center'}`}>
       <div className="flex-1">
         <DropdownField
           label={label}
@@ -165,10 +169,10 @@ function MonthlySettings() {
       <div className="flex items-center gap-2 flex-wrap">
         <input type="radio" name="monthly-mode" checked={mode === 'nth_weekday'} onChange={() => switchMode('nth_weekday')} className="h-4 w-4 shrink-0 cursor-pointer" />
         <span className="text-base text-gray-900">The</span>
-        <div className={`w-28 [&_svg.hover\\:text-gray-700]:hidden ${mode !== 'nth_weekday' ? '[&_button]:bg-gray-50' : ''}`}>
+        <div className={`w-28 hide-dropdown-clear ${mode !== 'nth_weekday' ? '[&_button]:bg-gray-50' : ''}`}>
           <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value={nthOrdinal} onChange={setNthOrdinal} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
         </div>
-        <div className={`w-32 [&_svg.hover\\:text-gray-700]:hidden ${mode !== 'nth_weekday' ? '[&_button]:bg-gray-50' : ''}`}>
+        <div className={`w-32 hide-dropdown-clear ${mode !== 'nth_weekday' ? '[&_button]:bg-gray-50' : ''}`}>
           <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value={nthWeekday} onChange={setNthWeekday} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
         </div>
         <span className="text-base text-gray-900">every</span>
@@ -207,7 +211,7 @@ function YearlySettings() {
       <div className="flex items-center gap-2">
         <input type="radio" name="yearly-mode" checked={mode === 'specific_date'} onChange={() => switchMode('specific_date')} className="h-4 w-4 shrink-0 cursor-pointer" />
         <span className="text-base text-gray-900">Every</span>
-        <div className={`w-36 [&_svg.hover\\:text-gray-700]:hidden ${mode !== 'specific_date' ? '[&_button]:bg-gray-50' : ''}`}>
+        <div className={`w-36 hide-dropdown-clear ${mode !== 'specific_date' ? '[&_button]:bg-gray-50' : ''}`}>
           <DropdownField choiceLabels={months} choiceValues={months} value={specificMonth} onChange={setSpecificMonth} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'specific_date'} />
         </div>
         <div className="w-24"><FormulaTextField placeholder="1" value={specificDay} onChange={setSpecificDay} disabled={mode !== 'specific_date'} /></div>
@@ -215,14 +219,14 @@ function YearlySettings() {
       <div className="flex items-center gap-2 flex-wrap">
         <input type="radio" name="yearly-mode" checked={mode === 'nth_weekday'} onChange={() => switchMode('nth_weekday')} className="h-4 w-4 shrink-0 cursor-pointer" />
         <span className="text-base text-gray-900">The</span>
-        <div className={`w-28 [&_svg.hover\\:text-gray-700]:hidden ${mode !== 'nth_weekday' ? '[&_button]:bg-gray-50' : ''}`}>
+        <div className={`w-28 hide-dropdown-clear ${mode !== 'nth_weekday' ? '[&_button]:bg-gray-50' : ''}`}>
           <DropdownField choiceLabels={['First','Second','Third','Fourth','Last']} choiceValues={['First','Second','Third','Fourth','Last']} value={nthOrdinal} onChange={setNthOrdinal} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
         </div>
-        <div className={`w-32 [&_svg.hover\\:text-gray-700]:hidden ${mode !== 'nth_weekday' ? '[&_button]:bg-gray-50' : ''}`}>
+        <div className={`w-32 hide-dropdown-clear ${mode !== 'nth_weekday' ? '[&_button]:bg-gray-50' : ''}`}>
           <DropdownField choiceLabels={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} choiceValues={['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']} value={nthWeekday} onChange={setNthWeekday} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
         </div>
         <span className="text-base text-gray-900">of</span>
-        <div className={`w-36 [&_svg.hover\\:text-gray-700]:hidden ${mode !== 'nth_weekday' ? '[&_button]:bg-gray-50' : ''}`}>
+        <div className={`w-36 hide-dropdown-clear ${mode !== 'nth_weekday' ? '[&_button]:bg-gray-50' : ''}`}>
           <DropdownField choiceLabels={months} choiceValues={months} value={nthMonth} onChange={setNthMonth} labelPosition="COLLAPSED" marginBelow="NONE" disabled={mode !== 'nth_weekday'} />
         </div>
       </div>
@@ -235,7 +239,7 @@ function IntervalSettings() {
     <div className="flex items-center gap-2">
       <span className="text-base text-gray-900">Every</span>
       <div className="w-24"><FormulaTextField placeholder="30" /></div>
-      <div className="w-28 [&_svg.hover\:text-gray-700]:hidden">
+      <div className="w-28 hide-dropdown-clear">
         <DropdownField
           choiceLabels={['Minutes', 'Hours']}
           choiceValues={['Minutes', 'Hours']}
@@ -249,6 +253,7 @@ function IntervalSettings() {
 }
 
 const timezones = [
+  "Default (initiator's timezone)",
   'America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles',
   'America/Anchorage', 'Pacific/Honolulu', 'Europe/London', 'Europe/Paris',
   'Europe/Berlin', 'Asia/Tokyo', 'Asia/Shanghai', 'Asia/Kolkata', 'Australia/Sydney', 'UTC',
@@ -260,7 +265,7 @@ function RecurrenceSettings() {
 
   return (
     <div className="space-y-4">
-      <div className="w-48 [&_svg.hover\:text-gray-700]:hidden">
+      <div className="w-48 hide-dropdown-clear">
         <DropdownField
           label="Repeat"
           choiceLabels={types}
@@ -286,7 +291,7 @@ function RecurrenceSettings() {
         <div className="border-t border-gray-200 pt-4">
           <div className="grid grid-cols-2 gap-3">
             <FormulaTextField label="Time of Day" placeholder="09:00 AM" />
-            <FormulaDropdown label="Timezone" options={timezones} />
+            <FormulaDropdown label="Timezone" options={timezones} defaultValue="Default (initiator's timezone)" />
           </div>
         </div>
       )}
@@ -298,11 +303,7 @@ function RepeatTimerSection() {
   return <RecurrenceSettings />
 }
 
-import { ChevronDown, ChevronRight } from 'lucide-react'
-
-import { TimerRecurrenceMockupsV2 } from './mockups-v2'
-
-function Section({ title, defaultOpen = true, children }: { title: string; defaultOpen?: boolean; children: React.ReactNode }) {
+function Section({ title, defaultOpen = true, children }: { title: string; defaultOpen?: boolean; children: ReactNode }) {
   const [open, setOpen] = useState(defaultOpen)
   return (
     <div>
@@ -314,8 +315,6 @@ function Section({ title, defaultOpen = true, children }: { title: string; defau
     </div>
   )
 }
-import { TimerRecurrenceMockupsV3 } from './mockups-v3'
-import { TimerRecurrenceMockupsV4 } from './mockups-v4'
 
 export default function TimerRecurrenceMockups() {
   return (

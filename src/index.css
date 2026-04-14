@@ -123,3 +123,7 @@
     accent-color: var(--color-blue-500);
   }
 }
+
+  .hide-dropdown-clear button > div.flex > svg:first-child:not(:last-child) {
+    display: none;
+  }
