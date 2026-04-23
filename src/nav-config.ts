@@ -6,6 +6,22 @@ export interface NavNode {
 
 export const navTree: NavNode[] = [
   {
+    name: 'Indie Time',
+    children: [
+      {
+        name: 'Features',
+        children: [
+          {
+            name: 'Password Reset in Admin Console',
+            children: [
+              { name: 'Forgot Password', path: '/password-reset/forgot-password' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
     name: 'Process Orchestration',
     children: [
       {
