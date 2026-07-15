@@ -19,7 +19,6 @@ interface CustomEmailConfig {
   resetBody: string
   rejectionSubject: string
   rejectionBody: string
-  activeTab: string
 }
 
 /**
@@ -146,7 +145,6 @@ export default function ForgotPasswordBase() {
       resetBody: 'You recently requested to reset your password. Click the link below to reset it. This link will expire based on the configured duration.',
       rejectionSubject: 'Password reset request denied',
       rejectionBody: 'A password reset was requested for your account, but it could not be completed. This may be because your account uses LDAP or SAML authentication. Please contact your administrator for assistance.',
-      activeTab: 'reset',
     }
   ])
 
@@ -158,7 +156,6 @@ export default function ForgotPasswordBase() {
       resetBody: 'You recently requested to reset your password. Click the link below to reset it. This link will expire based on the configured duration.',
       rejectionSubject: 'Password reset request denied',
       rejectionBody: 'A password reset was requested for your account, but it could not be completed. This may be because your account uses LDAP or SAML authentication. Please contact your administrator for assistance.',
-      activeTab: 'reset',
     }])
   }
 
@@ -417,41 +414,26 @@ export default function ForgotPasswordBase() {
                           marginBelow="STANDARD"
                         />
 
-                        <TabsField
-                          tabs={[
-                            {
-                              value: 'reset',
-                              label: 'Password Reset Email',
-                              content: (
-                                <div className="pt-4">
-                                  <EmailEditor
-                                    subjectValue={config.resetSubject}
-                                    onSubjectChange={(v) => updateCustomEmailB(config.id, { resetSubject: v })}
-                                    bodyValue={config.resetBody}
-                                    onBodyChange={(v) => updateCustomEmailB(config.id, { resetBody: v })}
-                                  />
-                                </div>
-                              ),
-                            },
-                            {
-                              value: 'rejection',
-                              label: 'Password Reset Rejection Email',
-                              content: (
-                                <div className="pt-4">
-                                  <EmailEditor
-                                    subjectValue={config.rejectionSubject}
-                                    onSubjectChange={(v) => updateCustomEmailB(config.id, { rejectionSubject: v })}
-                                    bodyValue={config.rejectionBody}
-                                    onBodyChange={(v) => updateCustomEmailB(config.id, { rejectionBody: v })}
-                                  />
-                                </div>
-                              ),
-                            },
-                          ]}
-                          value={config.activeTab}
-                          onValueChange={(tab) => updateCustomEmailB(config.id, { activeTab: tab })}
-                          marginBelow="NONE"
-                        />
+                        <div className="grid grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="text-sm font-semibold text-gray-700 mb-3">Password Reset Email</h4>
+                            <EmailEditor
+                              subjectValue={config.resetSubject}
+                              onSubjectChange={(v) => updateCustomEmailB(config.id, { resetSubject: v })}
+                              bodyValue={config.resetBody}
+                              onBodyChange={(v) => updateCustomEmailB(config.id, { resetBody: v })}
+                            />
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-semibold text-gray-700 mb-3">Password Reset Rejection Email</h4>
+                            <EmailEditor
+                              subjectValue={config.rejectionSubject}
+                              onSubjectChange={(v) => updateCustomEmailB(config.id, { rejectionSubject: v })}
+                              bodyValue={config.rejectionBody}
+                              onBodyChange={(v) => updateCustomEmailB(config.id, { rejectionBody: v })}
+                            />
+                          </div>
+                        </div>
                       </div>
                     )
                   })}
